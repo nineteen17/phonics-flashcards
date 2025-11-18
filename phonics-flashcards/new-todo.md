@@ -1,0 +1,3 @@
+1. when premium is unlocked. the groups should no longer show free cards number only the overall number.
+2. i no longer want the pastel color theme thats more vibrant and saturated. also I want the actual mcard color to relfect the color of the cards menu. e.g you only have differing colors at the main menu to distiguish different groups, but  iwant these group colrs to translate into the actual card as the actual card still shared the same blue default colour
+3 - when selecting a title from the group acrd, the title are unreadable in dark mode as the backgrouind is the saem color as the text which is a massive problem
