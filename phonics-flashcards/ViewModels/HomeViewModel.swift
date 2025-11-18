@@ -57,12 +57,14 @@ class HomeViewModel: ObservableObject {
     /// Get progress percentage for a group
     func getGroupProgressPercentage(for group: PhonicsGroup) -> Double {
         let accessibleCards = getAccessibleCards(for: group)
-        guard !accessibleCards.isEmpty else { return 0 }
+        guard !group.cards.isEmpty else { return 0 }
 
         let totalProgress = accessibleCards.reduce(0.0) { sum, card in
             sum + progressManager.getMasteryPercentage(for: card)
         }
-        return totalProgress / Double(accessibleCards.count)
+        // Progress is calculated as a percentage of ALL cards (free + premium)
+        // This ensures free users see realistic progress (e.g., 1/10 = 10%, not 1/5 = 20%)
+        return totalProgress / Double(group.cards.count)
     }
 
     /// Total study sessions
