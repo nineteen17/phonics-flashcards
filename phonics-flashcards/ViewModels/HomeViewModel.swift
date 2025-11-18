@@ -21,7 +21,8 @@ class HomeViewModel: ObservableObject {
     private let progressManager = ProgressManager.shared
 
     init() {
-        loadData()
+        // Don't call loadData() here - deferred to .task modifier in HomeView
+        // This prevents "Publishing changes from within view updates" warning
     }
 
     func loadData() {

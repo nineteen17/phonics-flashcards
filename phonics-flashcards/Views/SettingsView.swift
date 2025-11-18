@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showResetAlert = false
     @State private var showPrivacyPolicy = false
+    @State private var showPremiumPaywall = false
 
     var body: some View {
         NavigationStack {
@@ -34,8 +35,7 @@ struct SettingsView: View {
 
                     if !storeManager.isPremiumUnlocked {
                         Button("Unlock Premium") {
-                            dismiss()
-                            // The HomeView will show the paywall
+                            showPremiumPaywall = true
                         }
                         .foregroundColor(.blue)
                     }
@@ -170,6 +170,9 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showPrivacyPolicy) {
                 PrivacyPolicyView()
+            }
+            .sheet(isPresented: $showPremiumPaywall) {
+                PremiumPaywallView()
             }
         }
     }

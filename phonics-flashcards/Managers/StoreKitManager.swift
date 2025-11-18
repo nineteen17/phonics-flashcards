@@ -106,12 +106,12 @@ class StoreKitManager: ObservableObject {
         }
 
         self.purchasedProductIDs = purchasedIDs
-        self.isPremiumUnlocked = purchasedIDs.contains(premiumProductID)
 
-        // Also check UserDefaults as a backup (for testing)
-        if UserDefaults.standard.bool(forKey: "premium_unlocked") {
-            self.isPremiumUnlocked = true
-        }
+        // Consolidate premium status checks to avoid multiple publications
+        // This prevents "Publishing changes from within view updates" warning
+        let isPremiumFromEntitlements = purchasedIDs.contains(premiumProductID)
+        let isPremiumFromBackup = UserDefaults.standard.bool(forKey: "premium_unlocked")
+        self.isPremiumUnlocked = isPremiumFromEntitlements || isPremiumFromBackup
     }
 
     /// Listen for transaction updates

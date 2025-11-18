@@ -46,8 +46,10 @@ class FlashcardViewModel: ObservableObject {
             self.masteredWords = cardProgress.masteredWords
         }
 
-        // Record study session
-        progressManager.recordStudySession(for: card.title)
+        // Defer recording study session to prevent publishing during view construction
+        Task { @MainActor in
+            progressManager.recordStudySession(for: card.title)
+        }
     }
 
     /// Mark current word as mastered

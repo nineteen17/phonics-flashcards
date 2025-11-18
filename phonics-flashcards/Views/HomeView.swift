@@ -61,6 +61,10 @@ struct HomeView: View {
                     Text("\(error.localizedDescription)\n\n\(error.recoverySuggestion ?? "")")
                 }
             }
+            .task {
+                // Load data after view is ready to prevent publishing warnings
+                viewModel.loadData()
+            }
         }
     }
 

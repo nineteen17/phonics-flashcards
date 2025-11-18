@@ -45,7 +45,10 @@ class PhonicsRepository: ObservableObject {
     @Published var showErrorAlert = false
 
     private init() {
-        loadPhonicsData()
+        // Defer loading to prevent "Publishing changes from within view updates" warning
+        Task { @MainActor in
+            loadPhonicsData()
+        }
     }
 
     /// Load phonics data from bundled JSON file

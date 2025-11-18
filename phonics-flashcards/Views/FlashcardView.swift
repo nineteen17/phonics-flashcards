@@ -26,6 +26,11 @@ struct FlashcardView: View {
         let lowercaseWord = word.lowercased()
         let lowercasePhonetic = phonetic.lowercased()
 
+        // Handle patterns with underscores (e.g., "a_e" = magic e patterns)
+        if lowercasePhonetic.contains("_") {
+            return highlightMagicEPattern(word: word, phonetic: lowercasePhonetic, color: color)
+        }
+
         // Check if word starts with the phonetic pattern
         if lowercaseWord.hasPrefix(lowercasePhonetic) {
             let phoneticEndIndex = word.index(word.startIndex, offsetBy: phonetic.count)
@@ -49,6 +54,41 @@ struct FlashcardView: View {
 
         // If phonetic pattern not found, return the word as-is
         return Text(word)
+    }
+
+    /// Highlights "magic e" patterns (e.g., a_e in "cake" highlights 'a' and 'e')
+    private func highlightMagicEPattern(word: String, phonetic: String, color: Color) -> Text {
+        let lowercaseWord = word.lowercased()
+
+        // Split phonetic pattern by underscore (e.g., "a_e" -> ["a", "e"])
+        let parts = phonetic.split(separator: "_").map(String.init)
+        guard parts.count == 2 else { return Text(word) }
+
+        let firstVowel = parts[0]
+        let lastLetter = parts[1]
+
+        // Find the first vowel and the final letter
+        guard let firstRange = lowercaseWord.range(of: firstVowel),
+              lowercaseWord.hasSuffix(lastLetter) else {
+            return Text(word)
+        }
+
+        // Calculate indices
+        let firstVowelStart = word.distance(from: word.startIndex, to: firstRange.lowerBound)
+        let firstVowelEnd = firstVowelStart + firstVowel.count
+        let lastLetterStart = word.count - lastLetter.count
+
+        // Split word into parts
+        let beforeFirst = String(word.prefix(firstVowelStart))
+        let firstPart = String(word[word.index(word.startIndex, offsetBy: firstVowelStart)..<word.index(word.startIndex, offsetBy: firstVowelEnd)])
+        let middle = String(word[word.index(word.startIndex, offsetBy: firstVowelEnd)..<word.index(word.startIndex, offsetBy: lastLetterStart)])
+        let lastPart = String(word.suffix(lastLetter.count))
+
+        // Return highlighted text
+        return Text(beforeFirst) +
+               Text(firstPart).foregroundColor(color) +
+               Text(middle) +
+               Text(lastPart).foregroundColor(color)
     }
 
     var body: some View {

@@ -18,16 +18,19 @@ class ProgressManager: ObservableObject {
     private let defaults = UserDefaults.standard
     
     private init() {
-        // Load existing data safely
+        // Load existing data safely and update last opened date atomically
+        // This prevents "Publishing changes from within view updates" warning
         if let data = defaults.data(forKey: progressKey),
            let decoded = try? JSONDecoder().decode(UserProgressData.self, from: data) {
-            self.progressData = decoded
+            var mutableData = decoded
+            mutableData.lastOpenedDate = Date()
+            self.progressData = mutableData
         } else {
-            self.progressData = UserProgressData()
+            var newData = UserProgressData()
+            newData.lastOpenedDate = Date()
+            self.progressData = newData
         }
-        
-        // Always update last opened
-        progressData.lastOpenedDate = Date()
+
         saveProgress()
     }
     
@@ -42,14 +45,20 @@ class ProgressManager: ObservableObject {
     
     /// Mark a word as mastered for a card
     func markWordMastered(cardTitle: String, word: String) {
-        progressData.updateProgress(for: cardTitle, masteredWord: word)
+        // Atomic update to prevent multiple publications
+        var mutableData = progressData
+        mutableData.updateProgress(for: cardTitle, masteredWord: word)
+        progressData = mutableData
         saveProgress()
     }
-    
+
     /// Record a study session for a card
     func recordStudySession(for cardTitle: String) {
-        progressData.updateProgress(for: cardTitle)
-        progressData.totalStudySessions += 1
+        // Atomic update to prevent multiple publications
+        var mutableData = progressData
+        mutableData.updateProgress(for: cardTitle)
+        mutableData.totalStudySessions += 1
+        progressData = mutableData
         saveProgress()
     }
     
