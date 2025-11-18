@@ -13,6 +13,7 @@ struct phonics_flashcardsApp: App {
     @StateObject private var storeManager = StoreKitManager.shared
     @StateObject private var progressManager = ProgressManager.shared
     @StateObject private var repository = PhonicsRepository.shared
+    @StateObject private var themeManager = ThemeManager.shared
 
     var body: some Scene {
         WindowGroup {
@@ -20,6 +21,8 @@ struct phonics_flashcardsApp: App {
                 .environmentObject(storeManager)
                 .environmentObject(progressManager)
                 .environmentObject(repository)
+                .environmentObject(themeManager)
+                .preferredColorScheme(themeManager.theme.colorScheme)
         }
     }
 }

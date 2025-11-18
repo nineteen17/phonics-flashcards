@@ -10,8 +10,10 @@ import SwiftUI
 struct SettingsView: View {
     @StateObject private var storeManager = StoreKitManager.shared
     @StateObject private var progressManager = ProgressManager.shared
+    @StateObject private var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var showResetAlert = false
+    @State private var showPrivacyPolicy = false
 
     var body: some View {
         NavigationStack {
@@ -43,6 +45,20 @@ struct SettingsView: View {
                             await storeManager.restorePurchases()
                         }
                     }
+                }
+
+                // Appearance Section
+                Section("Appearance") {
+                    Picker("Theme", selection: $themeManager.currentTheme) {
+                        ForEach(AppTheme.allCases, id: \.rawValue) { theme in
+                            HStack {
+                                Image(systemName: theme.icon)
+                                Text(theme.rawValue)
+                            }
+                            .tag(theme.rawValue)
+                        }
+                    }
+                    .pickerStyle(.menu)
                 }
 
                 // Statistics Section
@@ -107,6 +123,19 @@ struct SettingsView: View {
                         Text("\(PhonicsRepository.shared.premiumCardsCount)")
                             .foregroundColor(.secondary)
                     }
+
+                    Button {
+                        showPrivacyPolicy = true
+                    } label: {
+                        HStack {
+                            Text("Privacy Policy")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .foregroundColor(.primary)
                 }
 
                 // Debug Section (only for testing)
@@ -138,6 +167,9 @@ struct SettingsView: View {
                 }
             } message: {
                 Text("Are you sure you want to reset all progress? This cannot be undone.")
+            }
+            .sheet(isPresented: $showPrivacyPolicy) {
+                PrivacyPolicyView()
             }
         }
     }

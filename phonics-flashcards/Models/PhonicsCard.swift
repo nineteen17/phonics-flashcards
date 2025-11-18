@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Represents a single phonics flashcard with a group, title, and word list
 struct PhonicsCard: Codable, Identifiable, Hashable {
@@ -59,5 +60,10 @@ struct PhonicsGroup: Identifiable, Hashable {
 
     var freeCards: Int {
         cards.filter { !$0.isPremium }.count
+    }
+
+    /// Soft pastel color for this group
+    var color: Color {
+        ColorTheme.colorForGroup(name)
     }
 }
