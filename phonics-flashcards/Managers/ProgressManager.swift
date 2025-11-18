@@ -74,9 +74,11 @@ class ProgressManager: ObservableObject {
 
     /// Reset all progress (for testing or settings)
     func resetAllProgress() {
-        progressData = UserProgressData()
-        progressData.lastOpenedDate = Date()
-        saveProgress()
+        DispatchQueue.main.async { [weak self] in
+            self?.progressData = UserProgressData()
+            self?.progressData.lastOpenedDate = Date()
+            self?.saveProgress()
+        }
     }
 
     /// Get total cards studied
