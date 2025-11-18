@@ -7,6 +7,33 @@
 
 import Foundation
 
+/// Custom errors for phonics repository
+enum PhonicsRepositoryError: LocalizedError {
+    case fileNotFound
+    case invalidData
+    case decodingFailed(Error)
+
+    var errorDescription: String? {
+        switch self {
+        case .fileNotFound:
+            return "Unable to find phonics data file. Please reinstall the app."
+        case .invalidData:
+            return "The phonics data is corrupted. Please reinstall the app."
+        case .decodingFailed(let error):
+            return "Failed to load phonics data: \(error.localizedDescription)"
+        }
+    }
+
+    var recoverySuggestion: String? {
+        switch self {
+        case .fileNotFound, .invalidData:
+            return "Try reinstalling the app from the App Store."
+        case .decodingFailed:
+            return "Please contact support if this problem persists."
+        }
+    }
+}
+
 /// Repository for managing phonics data
 class PhonicsRepository: ObservableObject {
     static let shared = PhonicsRepository()
@@ -14,7 +41,8 @@ class PhonicsRepository: ObservableObject {
     @Published private(set) var allCards: [PhonicsCard] = []
     @Published private(set) var groups: [PhonicsGroup] = []
     @Published private(set) var isLoading = false
-    @Published private(set) var error: Error?
+    @Published private(set) var error: PhonicsRepositoryError?
+    @Published var showErrorAlert = false
 
     private init() {
         loadPhonicsData()
@@ -24,6 +52,7 @@ class PhonicsRepository: ObservableObject {
     func loadPhonicsData() {
         isLoading = true
         error = nil
+        showErrorAlert = false
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
@@ -31,11 +60,24 @@ class PhonicsRepository: ObservableObject {
             do {
                 // Load JSON file from bundle
                 guard let url = Bundle.main.url(forResource: "phonics", withExtension: "json") else {
-                    throw NSError(domain: "PhonicsRepository", code: 1, userInfo: [NSLocalizedDescriptionKey: "phonics.json file not found in bundle"])
+                    throw PhonicsRepositoryError.fileNotFound
                 }
 
-                let data = try Data(contentsOf: url)
-                var cards = try JSONDecoder().decode([PhonicsCard].self, from: data)
+                guard let data = try? Data(contentsOf: url), !data.isEmpty else {
+                    throw PhonicsRepositoryError.invalidData
+                }
+
+                var cards: [PhonicsCard]
+                do {
+                    cards = try JSONDecoder().decode([PhonicsCard].self, from: data)
+                } catch {
+                    throw PhonicsRepositoryError.decodingFailed(error)
+                }
+
+                // Validate we have cards
+                guard !cards.isEmpty else {
+                    throw PhonicsRepositoryError.invalidData
+                }
 
                 // Mark approximately half as premium (cards at even indices are free)
                 for index in cards.indices {
@@ -53,11 +95,19 @@ class PhonicsRepository: ObservableObject {
                     self.groups = groups
                     self.isLoading = false
                 }
+            } catch let repositoryError as PhonicsRepositoryError {
+                DispatchQueue.main.async {
+                    self.error = repositoryError
+                    self.showErrorAlert = true
+                    self.isLoading = false
+                    print("❌ PhonicsRepository Error: \(repositoryError.localizedDescription)")
+                }
             } catch {
                 DispatchQueue.main.async {
-                    self.error = error
+                    self.error = .decodingFailed(error)
+                    self.showErrorAlert = true
                     self.isLoading = false
-                    print("Error loading phonics data: \(error)")
+                    print("❌ PhonicsRepository Error: \(error)")
                 }
             }
         }

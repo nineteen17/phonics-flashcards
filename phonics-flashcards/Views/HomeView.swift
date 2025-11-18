@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @StateObject private var storeManager = StoreKitManager.shared
+    @StateObject private var repository = PhonicsRepository.shared
     @State private var showingSettings = false
 
     var body: some View {
@@ -50,6 +51,16 @@ struct HomeView: View {
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
             }
+            .alert("Error Loading Data", isPresented: $repository.showErrorAlert) {
+                Button("Retry") {
+                    repository.loadPhonicsData()
+                }
+                Button("OK", role: .cancel) { }
+            } message: {
+                if let error = repository.error {
+                    Text("\(error.localizedDescription)\n\n\(error.recoverySuggestion ?? "")")
+                }
+            }
         }
     }
 
@@ -59,17 +70,19 @@ struct HomeView: View {
                 StatBadge(
                     title: "Sessions",
                     value: "\(viewModel.totalStudySessions)",
-                    icon: "book.fill"
+                    icon: "book.fill",
+                    color: .pastelLavender
                 )
                 StatBadge(
                     title: "Words Mastered",
                     value: "\(viewModel.totalWordsMastered)",
-                    icon: "star.fill"
+                    icon: "star.fill",
+                    color: .pastelPeach
                 )
             }
         }
         .padding()
-        .background(Color.blue.opacity(0.1))
+        .background(Color.pastelMint.opacity(0.2))
         .cornerRadius(12)
     }
 
@@ -101,12 +114,13 @@ struct StatBadge: View {
     let title: String
     let value: String
     let icon: String
+    var color: Color = .blue
 
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundColor(.blue)
+                .foregroundColor(color)
             Text(value)
                 .font(.title3)
                 .fontWeight(.bold)

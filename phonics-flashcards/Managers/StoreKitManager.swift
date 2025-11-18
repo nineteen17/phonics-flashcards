@@ -48,8 +48,9 @@ class StoreKitManager: ObservableObject {
             // For development, you need to configure the product in App Store Connect
             let products = try await Product.products(for: [premiumProductID])
             self.products = products
+            print("✅ Successfully loaded \(products.count) product(s)")
         } catch {
-            print("Failed to load products: \(error)")
+            print("❌ Failed to load products: \(error.localizedDescription)")
         }
     }
 
@@ -100,7 +101,7 @@ class StoreKitManager: ObservableObject {
                 let transaction = try checkVerified(result)
                 purchasedIDs.insert(transaction.productID)
             } catch {
-                print("Transaction verification failed: \(error)")
+                print("❌ Transaction verification failed: \(error.localizedDescription)")
             }
         }
 
@@ -122,7 +123,7 @@ class StoreKitManager: ObservableObject {
                     await self.checkPurchaseStatus()
                     await transaction.finish()
                 } catch {
-                    print("Transaction verification failed: \(error)")
+                    print("❌ Transaction update verification failed: \(error.localizedDescription)")
                 }
             }
         }
@@ -156,7 +157,35 @@ class StoreKitManager: ObservableObject {
     }
 }
 
-enum StoreError: Error {
+enum StoreError: LocalizedError {
     case failedVerification
     case productNotFound
+    case networkError
+    case purchaseFailed(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .failedVerification:
+            return "Purchase verification failed"
+        case .productNotFound:
+            return "Premium product not available"
+        case .networkError:
+            return "Network connection error"
+        case .purchaseFailed(let reason):
+            return "Purchase failed: \(reason)"
+        }
+    }
+
+    var recoverySuggestion: String? {
+        switch self {
+        case .failedVerification:
+            return "Please try again or contact support if the problem persists."
+        case .productNotFound:
+            return "The premium unlock is not available. Please try again later."
+        case .networkError:
+            return "Please check your internet connection and try again."
+        case .purchaseFailed:
+            return "Please try again or contact support if the problem persists."
+        }
+    }
 }

@@ -43,7 +43,8 @@ struct GroupCardView: View {
 
                     // Progress indicator
                     CircularProgressView(
-                        progress: viewModel.getGroupProgressPercentage(for: group)
+                        progress: viewModel.getGroupProgressPercentage(for: group),
+                        color: group.color
                     )
 
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
@@ -76,7 +77,7 @@ struct GroupCardView: View {
             }
         }
         .padding()
-        .background(Color.gray.opacity(0.05))
+        .background(group.color.opacity(0.15))
         .cornerRadius(12)
     }
 }
@@ -105,7 +106,11 @@ struct CardRowView: View {
                 Image(systemName: "lock.fill")
                     .foregroundColor(.orange)
             } else if progress > 0 {
-                CircularProgressView(progress: progress, size: 30)
+                CircularProgressView(
+                    progress: progress,
+                    color: ColorTheme.colorForGroup(card.group),
+                    size: 30
+                )
             }
 
             Image(systemName: "chevron.right")
@@ -122,6 +127,7 @@ struct CardRowView: View {
 
 struct CircularProgressView: View {
     let progress: Double
+    var color: Color = .blue
     var size: CGFloat = 40
 
     var body: some View {
@@ -132,7 +138,7 @@ struct CircularProgressView: View {
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    Color.blue,
+                    color,
                     style: StrokeStyle(lineWidth: 3, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
@@ -141,6 +147,7 @@ struct CircularProgressView: View {
                 Text("\(Int(progress * 100))%")
                     .font(.system(size: size * 0.3))
                     .fontWeight(.semibold)
+                    .foregroundColor(color)
             }
         }
         .frame(width: size, height: size)
