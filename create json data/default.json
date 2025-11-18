@@ -1,0 +1,590 @@
+[
+  {
+    "group": "Short Vowels",
+    "title": "at",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "am",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ad",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ap",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "an",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ag",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ed",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "en",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "et",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "eg",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "id",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ip",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ig",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "in",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "im",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "it",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ob",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "od",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "og",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "op",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ot",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ock",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "um",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "un",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ug",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ut",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ub",
+    "words": []
+  },
+  {
+    "group": "Short Vowels",
+    "title": "up",
+    "words": []
+  },
+
+  {
+    "group": "Vowel Teams",
+    "title": "a_e",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ai",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ay",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "e_e",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ee",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ea",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "i_e",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ie",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "igh",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "o_e",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "oe",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "oa",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "u_e",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ue",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ew",
+    "words": []
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ui",
+    "words": []
+  },
+
+  {
+    "group": "Consonant Blends",
+    "title": "bl",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "cl",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "fl",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "gl",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "pl",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sl",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "br",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "cr",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "dr",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "fr",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "gr",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "pr",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "tr",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "tw",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sc",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sk",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sm",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sn",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sp",
+    "words": []
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "st",
+    "words": []
+  },
+
+  {
+    "group": "Ending Blends",
+    "title": "ft",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "st",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "pt",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lt",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lm",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lf",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lk",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lp",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "nt",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "nd",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "nk",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "ng",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "mp",
+    "words": []
+  },
+  {
+    "group": "Ending Blends",
+    "title": "mb",
+    "words": []
+  },
+
+  {
+    "group": "Diphthongs",
+    "title": "ow",
+    "words": []
+  },
+  {
+    "group": "Diphthongs",
+    "title": "ou",
+    "words": []
+  },
+  {
+    "group": "Diphthongs",
+    "title": "oi",
+    "words": []
+  },
+  {
+    "group": "Diphthongs",
+    "title": "oy",
+    "words": []
+  },
+  {
+    "group": "Diphthongs",
+    "title": "oo",
+    "words": []
+  },
+  {
+    "group": "Diphthongs",
+    "title": "aw",
+    "words": []
+  },
+  {
+    "group": "Diphthongs",
+    "title": "au",
+    "words": []
+  },
+
+  {
+    "group": "Digraphs",
+    "title": "sh",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "ch",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "th",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "wh",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "ph",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "qu",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "ck",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "ch-",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "sh-",
+    "words": []
+  },
+  {
+    "group": "Digraphs",
+    "title": "-th",
+    "words": []
+  },
+
+  {
+    "group": "Hard & Soft C/G",
+    "title": "soft c",
+    "words": []
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "hard c",
+    "words": []
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "soft g",
+    "words": []
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "hard g",
+    "words": []
+  },
+
+  {
+    "group": "Trigraphs",
+    "title": "spl",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "spr",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "str",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "squ",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "scr",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "shr",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "thr",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "tch",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "dge",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "are",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "air",
+    "words": []
+  },
+  {
+    "group": "Trigraphs",
+    "title": "ear",
+    "words": []
+  },
+
+  {
+    "group": "R-Controlled",
+    "title": "ar",
+    "words": []
+  },
+  {
+    "group": "R-Controlled",
+    "title": "er",
+    "words": []
+  },
+  {
+    "group": "R-Controlled",
+    "title": "ir",
+    "words": []
+  },
+  {
+    "group": "R-Controlled",
+    "title": "or",
+    "words": []
+  },
+  {
+    "group": "R-Controlled",
+    "title": "ur",
+    "words": []
+  }
+]
