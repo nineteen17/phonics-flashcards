@@ -65,8 +65,8 @@ class HomeViewModel: ObservableObject {
         let totalProgress = accessibleCards.reduce(0.0) { sum, card in
             sum + progressManager.getMasteryPercentage(for: card)
         }
-
-        // Divide by total cards in group (free + premium combined)
+        // Progress is calculated as a percentage of ALL cards (free + premium)
+        // This ensures free users see realistic progress (e.g., 1/10 = 10%, not 1/5 = 20%)
         return totalProgress / Double(group.cards.count)
     }
 
