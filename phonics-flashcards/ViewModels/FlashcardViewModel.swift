@@ -12,7 +12,6 @@ import SwiftUI
 @MainActor
 class FlashcardViewModel: ObservableObject {
     @Published var currentWordIndex = 0
-    @Published var showingWord = false
     @Published var masteredWords: Set<String> = []
     @Published var sessionComplete = false
 
@@ -51,13 +50,6 @@ class FlashcardViewModel: ObservableObject {
         progressManager.recordStudySession(for: card.title)
     }
 
-    /// Toggle word visibility
-    func toggleWordVisibility() {
-        withAnimation {
-            showingWord.toggle()
-        }
-    }
-
     /// Mark current word as mastered
     func markCurrentWordMastered() {
         masteredWords.insert(currentWord)
@@ -69,7 +61,6 @@ class FlashcardViewModel: ObservableObject {
         if currentWordIndex < card.words.count - 1 {
             withAnimation {
                 currentWordIndex += 1
-                showingWord = false
             }
         } else {
             sessionComplete = true
@@ -81,7 +72,6 @@ class FlashcardViewModel: ObservableObject {
         if currentWordIndex > 0 {
             withAnimation {
                 currentWordIndex -= 1
-                showingWord = false
             }
         }
     }
@@ -91,7 +81,6 @@ class FlashcardViewModel: ObservableObject {
         guard index >= 0 && index < card.words.count else { return }
         withAnimation {
             currentWordIndex = index
-            showingWord = false
         }
     }
 
@@ -109,7 +98,6 @@ class FlashcardViewModel: ObservableObject {
     /// Reset session
     func resetSession() {
         currentWordIndex = 0
-        showingWord = false
         sessionComplete = false
     }
 }
