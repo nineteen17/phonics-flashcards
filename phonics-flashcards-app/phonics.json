@@ -1,0 +1,1626 @@
+[
+  {
+    "group": "Short Vowels",
+    "title": "at",
+    "words": [
+      "rat",
+      "hat",
+      "mat",
+      "fat",
+      "vat",
+      "bat",
+      "pat",
+      "cat"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "am",
+    "words": [
+      "bam",
+      "jam",
+      "ram",
+      "dam",
+      "pam",
+      "yam",
+      "cram",
+      "ham"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ad",
+    "words": [
+      "tad",
+      "fad",
+      "pad",
+      "bad",
+      "had",
+      "dad",
+      "mad",
+      "sad"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ap",
+    "words": [
+      "tap",
+      "rap",
+      "lap",
+      "nap",
+      "map",
+      "flap",
+      "snap",
+      "cap"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "an",
+    "words": [
+      "tan",
+      "can",
+      "fan",
+      "ran",
+      "van",
+      "ban",
+      "man",
+      "pan"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ag",
+    "words": [
+      "bag",
+      "hag",
+      "lag",
+      "gag",
+      "nag",
+      "sag",
+      "tag",
+      "rag"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ed",
+    "words": [
+      "red",
+      "bed",
+      "led",
+      "wed",
+      "sled",
+      "med",
+      "ted",
+      "red"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "en",
+    "words": [
+      "ten",
+      "when",
+      "men",
+      "pen",
+      "den",
+      "jen",
+      "ben",
+      "hen"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "et",
+    "words": [
+      "vet",
+      "let",
+      "pet",
+      "bet",
+      "set",
+      "get",
+      "met",
+      "net"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "eg",
+    "words": [
+      "leg",
+      "keg",
+      "peg",
+      "beg",
+      "greg",
+      "meg",
+      "neg",
+      "egg"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "id",
+    "words": [
+      "lid",
+      "rid",
+      "kid",
+      "bid",
+      "hid",
+      "did",
+      "skid",
+      "slid"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ip",
+    "words": [
+      "sip",
+      "lip",
+      "tip",
+      "ship",
+      "hip",
+      "dip",
+      "rip",
+      "zip"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ig",
+    "words": [
+      "wig",
+      "fig",
+      "jig",
+      "big",
+      "rig",
+      "gig",
+      "twig",
+      "dig"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "in",
+    "words": [
+      "tin",
+      "fin",
+      "pin",
+      "bin",
+      "kin",
+      "thin",
+      "chin",
+      "win"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "im",
+    "words": [
+      "him",
+      "rim",
+      "skim",
+      "brim",
+      "grim",
+      "slim",
+      "trim",
+      "swim"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "it",
+    "words": [
+      "wit",
+      "fit",
+      "bit",
+      "pit",
+      "hit",
+      "lit",
+      "slit",
+      "mitt"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ob",
+    "words": [
+      "cob",
+      "gob",
+      "blob",
+      "bob",
+      "lob",
+      "sob",
+      "mob",
+      "job"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "od",
+    "words": [
+      "bod",
+      "rod",
+      "mod",
+      "cod",
+      "sod",
+      "nod",
+      "clod",
+      "pod"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "og",
+    "words": [
+      "jog",
+      "fog",
+      "cog",
+      "bog",
+      "hog",
+      "log",
+      "blog",
+      "dog"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "op",
+    "words": [
+      "hop",
+      "bop",
+      "top",
+      "cop",
+      "mop",
+      "shop",
+      "drop",
+      "stop"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ot",
+    "words": [
+      "not",
+      "rot",
+      "pot",
+      "cot",
+      "got",
+      "dot",
+      "lot",
+      "hot"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ock",
+    "words": [
+      "sock",
+      "dock",
+      "rock",
+      "jock",
+      "mock",
+      "flock",
+      "lock",
+      "clock"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "um",
+    "words": [
+      "gum",
+      "hum",
+      "mum",
+      "sum",
+      "plum",
+      "glum",
+      "swum",
+      "drum"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "un",
+    "words": [
+      "run",
+      "fun",
+      "pun",
+      "bun",
+      "nun",
+      "gun",
+      "sun",
+      "lunch"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ug",
+    "words": [
+      "tug",
+      "lug",
+      "pug",
+      "bug",
+      "hug",
+      "dug",
+      "mug",
+      "rug"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ut",
+    "words": [
+      "rut",
+      "cut",
+      "gut",
+      "but",
+      "hut",
+      "shut",
+      "mutt",
+      "nut"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "ub",
+    "words": [
+      "sub",
+      "cub",
+      "pub",
+      "nub",
+      "hub",
+      "dub",
+      "rub",
+      "tub"
+    ]
+  },
+  {
+    "group": "Short Vowels",
+    "title": "up",
+    "words": [
+      "pup",
+      "sup",
+      "yup",
+      "upset",
+      "upload",
+      "lineup",
+      "update",
+      "cup"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "a_e",
+    "words": [
+      "late",
+      "lake",
+      "wake",
+      "bake",
+      "date",
+      "fade",
+      "tape",
+      "cake"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ai",
+    "words": [
+      "tail",
+      "main",
+      "pain",
+      "gain",
+      "mail",
+      "wait",
+      "train",
+      "rain"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ay",
+    "words": [
+      "hay",
+      "way",
+      "pay",
+      "may",
+      "lay",
+      "day",
+      "bay",
+      "play"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "e_e",
+    "words": [
+      "eve",
+      "pete",
+      "gene",
+      "scene",
+      "these",
+      "theme",
+      "delete",
+      "complete"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ee",
+    "words": [
+      "bee",
+      "feet",
+      "seed",
+      "keep",
+      "jeep",
+      "week",
+      "peek",
+      "tree"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ea",
+    "words": [
+      "sea",
+      "leaf",
+      "meat",
+      "beat",
+      "heat",
+      "weak",
+      "leak",
+      "eat"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "i_e",
+    "words": [
+      "kite",
+      "bite",
+      "tide",
+      "like",
+      "ride",
+      "wide",
+      "hide",
+      "file"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ie",
+    "words": [
+      "pie",
+      "die",
+      "lie",
+      "tie",
+      "cried",
+      "flies",
+      "tried",
+      "fries"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "igh",
+    "words": [
+      "light",
+      "fight",
+      "plight",
+      "height",
+      "flight",
+      "night",
+      "right",
+      "sigh"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "o_e",
+    "words": [
+      "hope",
+      "bone",
+      "nose",
+      "close",
+      "cone",
+      "rose",
+      "vote",
+      "home"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "oe",
+    "words": [
+      "toe",
+      "foe",
+      "doe",
+      "hoe",
+      "woe",
+      "joe",
+      "aloe",
+      "goes"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "oa",
+    "words": [
+      "boat",
+      "coal",
+      "goal",
+      "coat",
+      "goat",
+      "soap",
+      "toast",
+      "road"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "u_e",
+    "words": [
+      "use",
+      "cube",
+      "cute",
+      "mule",
+      "fume",
+      "mute",
+      "huge",
+      "tune"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ue",
+    "words": [
+      "due",
+      "cue",
+      "hue",
+      "fuel",
+      "venue",
+      "value",
+      "queue",
+      "argue"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ew",
+    "words": [
+      "new",
+      "hew",
+      "few",
+      "mew",
+      "knew",
+      "view",
+      "nephew",
+      "dew"
+    ]
+  },
+  {
+    "group": "Vowel Teams",
+    "title": "ui",
+    "words": [
+      "suit",
+      "fruit",
+      "juice",
+      "ruin",
+      "fluid",
+      "bruise",
+      "cruise",
+      "squid"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "bl",
+    "words": [
+      "blue",
+      "blimp",
+      "blow",
+      "block",
+      "blank",
+      "blunt",
+      "blanket",
+      "black"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "cl",
+    "words": [
+      "club",
+      "clam",
+      "claw",
+      "clean",
+      "clock",
+      "cloud",
+      "clown",
+      "clover"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "fl",
+    "words": [
+      "flag",
+      "flat",
+      "flap",
+      "floss",
+      "flash",
+      "flame",
+      "flower",
+      "fly"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "gl",
+    "words": [
+      "glue",
+      "glad",
+      "glow",
+      "glide",
+      "glass",
+      "globe",
+      "gloss",
+      "gloves"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "pl",
+    "words": [
+      "play",
+      "plug",
+      "plus",
+      "plan",
+      "plum",
+      "plant",
+      "plate",
+      "pliers"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sl",
+    "words": [
+      "slop",
+      "slip",
+      "slam",
+      "slice",
+      "sleep",
+      "sleet",
+      "slime",
+      "slide"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "br",
+    "words": [
+      "braid",
+      "brain",
+      "bread",
+      "bridge",
+      "broom",
+      "brown",
+      "branch",
+      "brush"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "cr",
+    "words": [
+      "cry",
+      "crab",
+      "cross",
+      "crack",
+      "crown",
+      "cream",
+      "credit",
+      "crawl"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "dr",
+    "words": [
+      "draw",
+      "dress",
+      "drink",
+      "drum",
+      "drive",
+      "dragon",
+      "dream",
+      "drill"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "fr",
+    "words": [
+      "free",
+      "from",
+      "fresh",
+      "frame",
+      "friemd",
+      "frown",
+      "friday",
+      "frog"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "gr",
+    "words": [
+      "grill",
+      "gray",
+      "grow",
+      "grape",
+      "green",
+      "grass",
+      "great",
+      "grade"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "pr",
+    "words": [
+      "print",
+      "price",
+      "prize",
+      "pride",
+      "prince",
+      "product",
+      "present",
+      "pray"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "tr",
+    "words": [
+      "tree",
+      "trick",
+      "tunk",
+      "truck",
+      "train",
+      "trash",
+      "trophy",
+      "tractor"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "tw",
+    "words": [
+      "twirl",
+      "twist",
+      "twice",
+      "twilight",
+      "twinkle",
+      "tweed",
+      "twitch",
+      "twig"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sc",
+    "words": [
+      "scab",
+      "scar",
+      "scarf",
+      "scoop",
+      "score",
+      "scale",
+      "scooter",
+      "scuba"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sk",
+    "words": [
+      "sky",
+      "ski",
+      "skill",
+      "skip",
+      "skirt",
+      "skull",
+      "skunk",
+      "skate"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sm",
+    "words": [
+      "smile",
+      "smell",
+      "samrt",
+      "small",
+      "smash",
+      "smock",
+      "smooth",
+      "smoke"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sn",
+    "words": [
+      "snail",
+      "snip",
+      "snap",
+      "snake",
+      "snore",
+      "snout",
+      "snorkel",
+      "snow"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "sp",
+    "words": [
+      "spy",
+      "spin",
+      "spot",
+      "space",
+      "speak",
+      "spider",
+      "sports",
+      "spoon"
+    ]
+  },
+  {
+    "group": "Consonant Blends",
+    "title": "st",
+    "words": [
+      "star",
+      "stack",
+      "stem",
+      "stick",
+      "stable",
+      "steam",
+      "storm",
+      "story"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "ft",
+    "words": [
+      "sift",
+      "soft",
+      "drify",
+      "raft",
+      "shift",
+      "craft",
+      "draft",
+      "lift"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "st",
+    "words": [
+      "list",
+      "first",
+      "last",
+      "rest",
+      "test",
+      "must",
+      "gust",
+      "nest"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "pt",
+    "words": [
+      "kept",
+      "adapt",
+      "crept",
+      "accept",
+      "sculpt",
+      "adopt",
+      "swept",
+      "erupt"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lt",
+    "words": [
+      "felt",
+      "halt",
+      "malt",
+      "belt",
+      "pelt",
+      "quilt",
+      "adult",
+      "salt"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lm",
+    "words": [
+      "elm",
+      "film",
+      "helm",
+      "realm",
+      "calm",
+      "whelm",
+      "palm",
+      "balm"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lf",
+    "words": [
+      "elf",
+      "shelf",
+      "wolf",
+      "golf",
+      "gulf",
+      "myself",
+      "himself",
+      "itself"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lk",
+    "words": [
+      "elk",
+      "milk",
+      "silk",
+      "bulk",
+      "hulk",
+      "balk",
+      "sulk",
+      "talk"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "lp",
+    "words": [
+      "help",
+      "pulp",
+      "gulp",
+      "yelp",
+      "palp",
+      "whelp",
+      "scalp",
+      "kelp"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "nt",
+    "words": [
+      "rant",
+      "tent",
+      "hunt",
+      "blunt",
+      "chant",
+      "front",
+      "scent",
+      "plant"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "nd",
+    "words": [
+      "kind",
+      "grand",
+      "bond",
+      "pond",
+      "stand",
+      "sand",
+      "band",
+      "hand"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "nk",
+    "words": [
+      "pink",
+      "wink",
+      "stink",
+      "bank",
+      "trunk",
+      "think",
+      "sink",
+      "drink"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "ng",
+    "words": [
+      "ring",
+      "long",
+      "lung",
+      "thing",
+      "wing",
+      "along",
+      "king",
+      "song"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "mp",
+    "words": [
+      "chimp",
+      "blimp",
+      "jump",
+      "ramp",
+      "camp",
+      "stamp",
+      "stump",
+      "lamp"
+    ]
+  },
+  {
+    "group": "Ending Blends",
+    "title": "mb",
+    "words": [
+      "limb",
+      "lamb",
+      "numb",
+      "climb",
+      "thumb",
+      "dumb",
+      "womb",
+      "comb"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "ow",
+    "words": [
+      "bow",
+      "cow",
+      "how",
+      "howl",
+      "town",
+      "brow",
+      "towel",
+      "crown"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "ou",
+    "words": [
+      "loud",
+      "snout",
+      "mouse",
+      "ground",
+      "couch",
+      "mouth",
+      "house",
+      "sound"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "oi",
+    "words": [
+      "oil",
+      "boil",
+      "foil",
+      "soil",
+      "toil",
+      "spoil",
+      "point",
+      "coin"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "oy",
+    "words": [
+      "toy",
+      "soy",
+      "boy",
+      "coy",
+      "enjoy",
+      "cowboy",
+      "delpoy",
+      "annoy"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "oo",
+    "words": [
+      "book",
+      "hook",
+      "cook",
+      "foot",
+      "wood",
+      "hood",
+      "nook",
+      "look"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "aw",
+    "words": [
+      "paw",
+      "raw",
+      "claw",
+      "slaw",
+      "flaw",
+      "awful",
+      "saw",
+      "draw"
+    ]
+  },
+  {
+    "group": "Diphthongs",
+    "title": "au",
+    "words": [
+      "haul",
+      "audio",
+      "sauce",
+      "pause",
+      "cause",
+      "august",
+      "autumn",
+      "dinosaur"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "sh",
+    "words": [
+      "shop",
+      "shell",
+      "shirt",
+      "shark",
+      "show",
+      "sheep",
+      "shoes",
+      "ship"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "ch",
+    "words": [
+      "chin",
+      "chick",
+      "chair",
+      "chew",
+      "chimp",
+      "chest",
+      "cherry",
+      "cheese"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "th",
+    "words": [
+      "three",
+      "thief",
+      "thumb",
+      "thread",
+      "thump",
+      "throne",
+      "thing",
+      "thorn"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "wh",
+    "words": [
+      "wham",
+      "white",
+      "wheel",
+      "whisk",
+      "whip",
+      "wheat",
+      "whirl",
+      "whale"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "ph",
+    "words": [
+      "phone",
+      "photo",
+      "phrase",
+      "elephant",
+      "physics",
+      "alphabet",
+      "phonics",
+      "dolphin"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "qu",
+    "words": [
+      "quilt",
+      "quill",
+      "quiet",
+      "quite",
+      "quack",
+      "question",
+      "quarter",
+      "queen"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "ck",
+    "words": [
+      "duck",
+      "truck",
+      "clock",
+      "rock",
+      "stick",
+      "trick",
+      "dock",
+      "pack"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "ch-",
+    "words": [
+      "inch",
+      "each",
+      "bench",
+      "couch",
+      "lunch",
+      "punch",
+      "church",
+      "peach"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "sh-",
+    "words": [
+      "fish",
+      "rash",
+      "leash",
+      "brush",
+      "wash",
+      "bush",
+      "trash",
+      "splash"
+    ]
+  },
+  {
+    "group": "Digraphs",
+    "title": "-th",
+    "words": [
+      "bath",
+      "both",
+      "path",
+      "math",
+      "mouth",
+      "fourth",
+      "north",
+      "tooth"
+    ]
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "soft c",
+    "words": [
+      "cent",
+      "cider",
+      "celery",
+      "cellphone",
+      "cereal",
+      "centre",
+      "cement",
+      "city"
+    ]
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "hard c",
+    "words": [
+      "cat",
+      "clip",
+      "cone",
+      "candy",
+      "cookies",
+      "camera",
+      "crayon",
+      "camp"
+    ]
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "soft g",
+    "words": [
+      "gem",
+      "gene",
+      "gym",
+      "giant",
+      "page",
+      "stage",
+      "orange",
+      "giraffe"
+    ]
+  },
+  {
+    "group": "Hard & Soft C/G",
+    "title": "hard g",
+    "words": [
+      "girl",
+      "gift",
+      "gas",
+      "gum",
+      "goat",
+      "good",
+      "game",
+      "green"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "spl",
+    "words": [
+      "splat",
+      "split",
+      "splint",
+      "splinter",
+      "splutter",
+      "splatter",
+      "splendid",
+      "splash"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "spr",
+    "words": [
+      "sprint",
+      "sprain",
+      "spring",
+      "sprout",
+      "spray",
+      "spread",
+      "spree",
+      "sprinkler"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "str",
+    "words": [
+      "string",
+      "strong",
+      "street",
+      "straw",
+      "strum",
+      "stream",
+      "straight",
+      "stretch"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "squ",
+    "words": [
+      "squad",
+      "squat",
+      "squeal",
+      "square",
+      "squash",
+      "squirrel",
+      "squeeze",
+      "squid"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "scr",
+    "words": [
+      "scrap",
+      "scrub",
+      "scroll",
+      "scrape",
+      "screen",
+      "scream",
+      "screech",
+      "screw"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "shr",
+    "words": [
+      "shrill",
+      "shrug",
+      "shred",
+      "shriek",
+      "shrub",
+      "shrine",
+      "shrink",
+      "shrimp"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "thr",
+    "words": [
+      "thrill",
+      "three",
+      "throb",
+      "thread",
+      "throne",
+      "throw",
+      "through",
+      "throat"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "tch",
+    "words": [
+      "pitch",
+      "catch",
+      "crutch",
+      "hatch",
+      "patch",
+      "witch",
+      "match",
+      "watch"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "dge",
+    "words": [
+      "hedge",
+      "fusdge",
+      "frisdge",
+      "badge",
+      "dodge",
+      "judge",
+      "ridge",
+      "bridge"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "are",
+    "words": [
+      "care",
+      "dare",
+      "flare",
+      "bare",
+      "stare",
+      "compare",
+      "share",
+      "scare"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "air",
+    "words": [
+      "air",
+      "hair",
+      "pair",
+      "fair",
+      "chair",
+      "stair",
+      "repair",
+      "airplane"
+    ]
+  },
+  {
+    "group": "Trigraphs",
+    "title": "ear",
+    "words": [
+      "ear",
+      "tear",
+      "fear",
+      "year",
+      "gear",
+      "clear",
+      "hear",
+      "beard"
+    ]
+  },
+  {
+    "group": "R-Controlled",
+    "title": "ar",
+    "words": [
+      "car",
+      "jar",
+      "tar",
+      "star",
+      "yarn",
+      "mart",
+      "harp",
+      "bark"
+    ]
+  },
+  {
+    "group": "R-Controlled",
+    "title": "er",
+    "words": [
+      "her",
+      "cover",
+      "letter",
+      "baker",
+      "butter",
+      "water",
+      "flower",
+      "spider"
+    ]
+  },
+  {
+    "group": "R-Controlled",
+    "title": "ir",
+    "words": [
+      "dirt",
+      "girl",
+      "bird",
+      "stir",
+      "first",
+      "twirl",
+      "swirl",
+      "circle"
+    ]
+  },
+  {
+    "group": "R-Controlled",
+    "title": "or",
+    "words": [
+      "horn",
+      "fork",
+      "torn",
+      "cord",
+      "cork",
+      "storm",
+      "born",
+      "corn"
+    ]
+  },
+  {
+    "group": "R-Controlled",
+    "title": "ur",
+    "words": [
+      "fur",
+      "curl",
+      "hurt",
+      "turn",
+      "burn",
+      "nurse",
+      "purse",
+      "turtle"
+    ]
+  }
+]

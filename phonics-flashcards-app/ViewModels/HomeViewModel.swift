@@ -1,0 +1,89 @@
+//
+//  HomeViewModel.swift
+//  phonics-flashcards
+//
+//  Created by Nick Ririnui on 18/11/2025.
+//
+
+import Foundation
+import SwiftUI
+
+/// ViewModel for the home screen
+@MainActor
+class HomeViewModel: ObservableObject {
+    @Published var groups: [PhonicsGroup] = []
+    @Published var isLoading = false
+    @Published var showPremiumPaywall = false
+    @Published var selectedGroup: PhonicsGroup?
+
+    private let repository = PhonicsRepository.shared
+    private let storeManager = StoreKitManager.shared
+    private let progressManager = ProgressManager.shared
+
+    init() {
+        loadData()
+    }
+
+    func loadData() {
+        isLoading = true
+
+        // Observe repository changes
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let self = self else { return }
+            self.groups = self.repository.groups
+            self.isLoading = false
+        }
+    }
+
+    /// Get filtered cards for a group based on premium status
+    func getAccessibleCards(for group: PhonicsGroup) -> [PhonicsCard] {
+        if storeManager.isPremiumUnlocked {
+            return group.cards
+        } else {
+            return group.cards.filter { !$0.isPremium }
+        }
+    }
+
+    /// Check if user can access a card
+    func canAccessCard(_ card: PhonicsCard) -> Bool {
+        return !card.isPremium || storeManager.isPremiumUnlocked
+    }
+
+    /// Get progress percentage for a card
+    func getProgressPercentage(for card: PhonicsCard) -> Double {
+        return progressManager.getMasteryPercentage(for: card)
+    }
+
+    /// Get progress percentage for a group
+    func getGroupProgressPercentage(for group: PhonicsGroup) -> Double {
+        let accessibleCards = getAccessibleCards(for: group)
+        guard !accessibleCards.isEmpty else { return 0 }
+
+        let totalProgress = accessibleCards.reduce(0.0) { sum, card in
+            sum + progressManager.getMasteryPercentage(for: card)
+        }
+        return totalProgress / Double(accessibleCards.count)
+    }
+
+    /// Total study sessions
+    var totalStudySessions: Int {
+        progressManager.totalStudySessions
+    }
+
+    /// Total words mastered
+    var totalWordsMastered: Int {
+        progressManager.totalWordsMastered
+    }
+
+    /// Is premium unlocked
+    var isPremiumUnlocked: Bool {
+        storeManager.isPremiumUnlocked
+    }
+
+    /// Show paywall if trying to access premium content
+    func handleCardTap(_ card: PhonicsCard) {
+        if !canAccessCard(card) {
+            showPremiumPaywall = true
+        }
+    }
+}
