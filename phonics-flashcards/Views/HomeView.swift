@@ -115,6 +115,7 @@ struct StatBadge: View {
     let value: String
     let icon: String
     var color: Color = .blue
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack(spacing: 8) {
@@ -124,13 +125,14 @@ struct StatBadge: View {
             Text(value)
                 .font(.title3)
                 .fontWeight(.bold)
+                .foregroundColor(colorScheme == .dark ? .white : .primary)
             Text(title)
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.white)
+        .background(colorScheme == .dark ? Color(white: 0.15) : Color.white)
         .cornerRadius(10)
         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
     }
