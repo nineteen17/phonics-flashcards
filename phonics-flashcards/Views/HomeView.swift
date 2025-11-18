@@ -71,18 +71,18 @@ struct HomeView: View {
                     title: "Sessions",
                     value: "\(viewModel.totalStudySessions)",
                     icon: "book.fill",
-                    color: .pastelLavender
+                    color: .vibrantLavender
                 )
                 StatBadge(
                     title: "Words Mastered",
                     value: "\(viewModel.totalWordsMastered)",
                     icon: "star.fill",
-                    color: .pastelPeach
+                    color: .vibrantPeach
                 )
             }
         }
         .padding()
-        .background(Color.pastelMint.opacity(0.2))
+        .background(Color.vibrantMint.opacity(0.2))
         .cornerRadius(12)
     }
 
