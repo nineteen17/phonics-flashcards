@@ -12,6 +12,10 @@ struct FlashcardView: View {
     @StateObject private var viewModel: FlashcardViewModel
     @Environment(\.dismiss) private var dismiss
 
+    private var groupColor: Color {
+        ColorTheme.colorForGroup(card.group)
+    }
+
     init(card: PhonicsCard) {
         self.card = card
         _viewModel = StateObject(wrappedValue: FlashcardViewModel(card: card))
@@ -54,7 +58,7 @@ struct FlashcardView: View {
         VStack(spacing: 12) {
             // Progress bar
             ProgressView(value: viewModel.progress)
-                .tint(.blue)
+                .tint(groupColor)
 
             HStack {
                 Text("Word \(viewModel.currentWordIndex + 1) of \(viewModel.totalWords)")
@@ -75,7 +79,7 @@ struct FlashcardView: View {
             // Phonics title (always visible)
             Text(card.title)
                 .font(.system(size: 80, weight: .bold))
-                .foregroundColor(.blue)
+                .foregroundColor(groupColor)
 
             // Tap to reveal word
             Button {
@@ -83,7 +87,7 @@ struct FlashcardView: View {
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.blue.opacity(0.1))
+                        .fill(groupColor.opacity(0.1))
                         .frame(height: 200)
 
                     if viewModel.showingWord {
@@ -136,7 +140,7 @@ struct FlashcardView: View {
             } label: {
                 Image(systemName: "chevron.left.circle.fill")
                     .font(.system(size: 50))
-                    .foregroundColor(.blue)
+                    .foregroundColor(groupColor)
             }
             .disabled(viewModel.currentWordIndex == 0)
             .opacity(viewModel.currentWordIndex == 0 ? 0.3 : 1.0)
@@ -146,7 +150,7 @@ struct FlashcardView: View {
             } label: {
                 Image(systemName: viewModel.isLastWord ? "checkmark.circle.fill" : "chevron.right.circle.fill")
                     .font(.system(size: 50))
-                    .foregroundColor(.blue)
+                    .foregroundColor(groupColor)
             }
         }
         .padding(.vertical)
@@ -179,7 +183,7 @@ struct FlashcardView: View {
                             .padding(.vertical, 6)
                             .background(
                                 index == viewModel.currentWordIndex ?
-                                Color.blue : Color.gray.opacity(0.2)
+                                groupColor : Color.gray.opacity(0.2)
                             )
                             .foregroundColor(
                                 index == viewModel.currentWordIndex ? .white : .primary
