@@ -11,6 +11,7 @@ struct GroupCardView: View {
     let group: PhonicsGroup
     @ObservedObject var viewModel: HomeViewModel
     @State private var isExpanded = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -24,12 +25,13 @@ struct GroupCardView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(group.name)
                             .font(.headline)
-                            .foregroundColor(.primary)
+                            .fontWeight(.bold)
+                            .foregroundColor(colorScheme == .dark ? .white.opacity(0.95) : .black.opacity(0.9))
 
                         HStack {
                             Text("\(group.totalCards) cards")
                                 .font(.caption)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(colorScheme == .dark ? .white.opacity(0.75) : .black.opacity(0.7))
 
                             if group.premiumCards > 0 && !viewModel.isPremiumUnlocked {
                                 Text("• \(group.freeCards) free")
@@ -86,6 +88,7 @@ struct CardRowView: View {
     let card: PhonicsCard
     let progress: Double
     let isLocked: Bool
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         HStack {
@@ -93,11 +96,11 @@ struct CardRowView: View {
                 Text(card.title)
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .foregroundColor(.primary)
+                    .foregroundColor(colorScheme == .dark ? .white.opacity(0.95) : .black.opacity(0.85))
 
                 Text("\(card.words.count) words")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(colorScheme == .dark ? .white.opacity(0.75) : .black.opacity(0.65))
             }
 
             Spacer()
@@ -119,7 +122,7 @@ struct CardRowView: View {
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 12)
-        .background(Color.white)
+        .background(ColorTheme.colorForGroup(card.group).opacity(0.25))
         .cornerRadius(8)
         .opacity(isLocked ? 0.6 : 1.0)
     }
