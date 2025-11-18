@@ -39,15 +39,19 @@ class ProgressManager: ObservableObject {
 
     /// Mark a word as mastered for a card
     func markWordMastered(cardTitle: String, word: String) {
-        progressData.updateProgress(for: cardTitle, masteredWord: word)
-        saveProgress()
+        DispatchQueue.main.async { [weak self] in
+            self?.progressData.updateProgress(for: cardTitle, masteredWord: word)
+            self?.saveProgress()
+        }
     }
 
     /// Record a study session for a card
     func recordStudySession(for cardTitle: String) {
-        progressData.updateProgress(for: cardTitle)
-        progressData.totalStudySessions += 1
-        saveProgress()
+        DispatchQueue.main.async { [weak self] in
+            self?.progressData.updateProgress(for: cardTitle)
+            self?.progressData.totalStudySessions += 1
+            self?.saveProgress()
+        }
     }
 
     /// Get progress for a specific card
