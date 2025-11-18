@@ -21,6 +21,36 @@ struct FlashcardView: View {
         _viewModel = StateObject(wrappedValue: FlashcardViewModel(card: card))
     }
 
+    /// Creates attributed text with phonetic part colored
+    private func highlightedWord(_ word: String, phonetic: String, color: Color) -> Text {
+        let lowercaseWord = word.lowercased()
+        let lowercasePhonetic = phonetic.lowercased()
+
+        // Check if word starts with the phonetic pattern
+        if lowercaseWord.hasPrefix(lowercasePhonetic) {
+            let phoneticEndIndex = word.index(word.startIndex, offsetBy: phonetic.count)
+            let phoneticPart = String(word[..<phoneticEndIndex])
+            let remainingPart = String(word[phoneticEndIndex...])
+
+            return Text(phoneticPart).foregroundColor(color) + Text(remainingPart)
+        } else {
+            // Otherwise, try to find it anywhere in the word
+            if let range = lowercaseWord.range(of: lowercasePhonetic) {
+                let startIndex = word.distance(from: word.startIndex, to: range.lowerBound)
+                let endIndex = startIndex + phonetic.count
+
+                let beforePart = String(word.prefix(startIndex))
+                let phoneticPart = String(word[word.index(word.startIndex, offsetBy: startIndex)..<word.index(word.startIndex, offsetBy: endIndex)])
+                let afterPart = String(word.suffix(word.count - endIndex))
+
+                return Text(beforePart) + Text(phoneticPart).foregroundColor(color) + Text(afterPart)
+            }
+        }
+
+        // If phonetic pattern not found, return the word as-is
+        return Text(word)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Header with progress
@@ -81,39 +111,26 @@ struct FlashcardView: View {
                 .font(.system(size: 80, weight: .bold))
                 .foregroundColor(groupColor)
 
-            // Tap to reveal word
-            Button {
-                viewModel.toggleWordVisibility()
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(groupColor.opacity(0.1))
-                        .frame(height: 200)
+            // Word display
+            ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(groupColor.opacity(0.1))
+                    .frame(height: 200)
 
-                    if viewModel.showingWord {
-                        VStack(spacing: 12) {
-                            Text(viewModel.currentWord)
-                                .font(.system(size: 60, weight: .semibold))
-                                .foregroundColor(.primary)
+                VStack(spacing: 12) {
+                    highlightedWord(viewModel.currentWord, phonetic: card.title, color: groupColor)
+                        .font(.system(size: 60, weight: .semibold))
 
-                            if viewModel.isWordMastered(viewModel.currentWord) {
-                                Image(systemName: "star.fill")
-                                    .font(.title)
-                                    .foregroundColor(.yellow)
-                            }
-                        }
-                        .transition(.scale.combined(with: .opacity))
-                    } else {
-                        Text("Tap to reveal")
-                            .font(.title3)
-                            .foregroundColor(.secondary)
+                    if viewModel.isWordMastered(viewModel.currentWord) {
+                        Image(systemName: "star.fill")
+                            .font(.title)
+                            .foregroundColor(.yellow)
                     }
                 }
             }
-            .buttonStyle(PlainButtonStyle())
 
             // Mark as mastered button
-            if viewModel.showingWord && !viewModel.isWordMastered(viewModel.currentWord) {
+            if !viewModel.isWordMastered(viewModel.currentWord) {
                 Button {
                     withAnimation {
                         viewModel.markCurrentWordMastered()
@@ -127,10 +144,8 @@ struct FlashcardView: View {
                         .background(Color.yellow)
                         .cornerRadius(12)
                 }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
-        .animation(.spring(), value: viewModel.showingWord)
     }
 
     private var controlsView: some View {
@@ -162,34 +177,48 @@ struct FlashcardView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(Array(card.words.enumerated()), id: \.offset) { index, word in
-                        Button {
-                            viewModel.jumpToWord(at: index)
-                        } label: {
-                            HStack(spacing: 4) {
-                                Text(word)
-                                    .font(.caption)
-                                    .fontWeight(index == viewModel.currentWordIndex ? .bold : .regular)
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(Array(card.words.enumerated()), id: \.offset) { index, word in
+                            Button {
+                                viewModel.jumpToWord(at: index)
+                            } label: {
+                                HStack(spacing: 4) {
+                                    // Use colored highlighting for words, but adjust color based on selection
+                                    if index == viewModel.currentWordIndex {
+                                        // When selected, show in white on colored background
+                                        Text(word)
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(.white)
+                                    } else {
+                                        // When not selected, show with phonetic highlighting
+                                        highlightedWord(word, phonetic: card.title, color: groupColor)
+                                            .font(.caption)
+                                    }
 
-                                if viewModel.isWordMastered(word) {
-                                    Image(systemName: "star.fill")
-                                        .font(.caption2)
-                                        .foregroundColor(.yellow)
+                                    if viewModel.isWordMastered(word) {
+                                        Image(systemName: "star.fill")
+                                            .font(.caption2)
+                                            .foregroundColor(.yellow)
+                                    }
                                 }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(
+                                    index == viewModel.currentWordIndex ?
+                                    groupColor : Color.gray.opacity(0.2)
+                                )
+                                .cornerRadius(8)
                             }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(
-                                index == viewModel.currentWordIndex ?
-                                groupColor : Color.gray.opacity(0.2)
-                            )
-                            .foregroundColor(
-                                index == viewModel.currentWordIndex ? .white : .primary
-                            )
-                            .cornerRadius(8)
+                            .id(index) // Add ID for ScrollViewReader
                         }
+                    }
+                }
+                .onChange(of: viewModel.currentWordIndex) { _, newIndex in
+                    withAnimation {
+                        proxy.scrollTo(newIndex, anchor: .center)
                     }
                 }
             }
