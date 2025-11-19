@@ -22,6 +22,7 @@ class StoreKitManager: ObservableObject {
     @Published var isPremiumUnlocked = false
 
     private var updateListenerTask: Task<Void, Error>?
+    private var checkPurchaseTask: Task<Void, Never>?
 
     private init() {
         // Start listening for transaction updates
@@ -39,18 +40,39 @@ class StoreKitManager: ObservableObject {
     }
 
     /// Load available products from the App Store
+    /// Retries up to 3 times on failure to handle network issues
     func loadProducts() async {
+        // Don't reload if already loaded
+        guard products.isEmpty else {
+            print("ℹ️ Products already loaded, skipping")
+            return
+        }
+
         isLoading = true
         defer { isLoading = false }
 
-        do {
-            // In production, this will load from App Store Connect
-            // For development, you need to configure the product in App Store Connect
-            let products = try await Product.products(for: [premiumProductID])
-            self.products = products
-            print("✅ Successfully loaded \(products.count) product(s)")
-        } catch {
-            print("❌ Failed to load products: \(error.localizedDescription)")
+        let maxRetries = 3
+        var retries = 0
+
+        while retries < maxRetries {
+            do {
+                // In production, this will load from App Store Connect
+                // For development, you need to configure the product in App Store Connect
+                let products = try await Product.products(for: [premiumProductID])
+                self.products = products
+                print("✅ Successfully loaded \(products.count) product(s)")
+                return
+            } catch {
+                retries += 1
+                print("❌ Failed to load products (attempt \(retries)/\(maxRetries)): \(error.localizedDescription)")
+
+                if retries < maxRetries {
+                    // Wait 1 second before retrying
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                } else {
+                    print("❌ Failed to load products after \(maxRetries) attempts")
+                }
+            }
         }
     }
 
@@ -68,14 +90,26 @@ class StoreKitManager: ObservableObject {
         switch result {
         case .success(let verification):
             let transaction = try checkVerified(verification)
-            await transaction.finish()
+
+            // CRITICAL: Update state BEFORE finishing transaction
+            // This prevents data loss if app crashes
             await checkPurchaseStatus()
+
+            // Verify state was actually updated
+            guard isPremiumUnlocked else {
+                throw StoreError.purchaseFailed("Purchase verified but state not updated. Please restart the app.")
+            }
+
+            // NOW it's safe to finish the transaction
+            await transaction.finish()
             return transaction
 
         case .userCancelled:
+            print("User cancelled purchase")
             return nil
 
         case .pending:
+            print("Purchase pending (e.g., Ask to Buy)")
             return nil
 
         @unknown default:
@@ -84,34 +118,73 @@ class StoreKitManager: ObservableObject {
     }
 
     /// Restore previous purchases
-    func restorePurchases() async {
+    /// Throws specific errors to help users understand what went wrong
+    func restorePurchases() async throws {
         isLoading = true
         defer { isLoading = false }
 
-        try? await AppStore.sync()
-        await checkPurchaseStatus()
+        do {
+            // Sync with App Store
+            try await AppStore.sync()
+
+            // Wait briefly for transactions to update
+            try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+
+            // Check purchase status
+            await checkPurchaseStatus()
+
+            // Verify that premium was actually unlocked
+            guard isPremiumUnlocked else {
+                throw StoreError.noPreviousPurchases
+            }
+
+            print("✅ Successfully restored purchases")
+        } catch let error as StoreError {
+            // Re-throw our custom errors
+            throw error
+        } catch {
+            // Convert system errors to user-friendly messages
+            print("❌ Restore purchases failed: \(error.localizedDescription)")
+            throw StoreError.restoreFailed("App Store connection issue")
+        }
     }
 
     /// Check if premium is already purchased
+    /// Prevents race conditions by cancelling any ongoing check
     private func checkPurchaseStatus() async {
-        var purchasedIDs: Set<String> = []
+        // Cancel previous check if still running
+        checkPurchaseTask?.cancel()
 
-        for await result in Transaction.currentEntitlements {
-            do {
-                let transaction = try checkVerified(result)
-                purchasedIDs.insert(transaction.productID)
-            } catch {
-                print("❌ Transaction verification failed: \(error.localizedDescription)")
+        checkPurchaseTask = Task {
+            var purchasedIDs: Set<String> = []
+
+            for await result in Transaction.currentEntitlements {
+                // Check for cancellation
+                guard !Task.isCancelled else {
+                    print("⚠️ Purchase status check cancelled")
+                    return
+                }
+
+                do {
+                    let transaction = try checkVerified(result)
+                    purchasedIDs.insert(transaction.productID)
+                } catch {
+                    print("❌ Transaction verification failed: \(error.localizedDescription)")
+                }
             }
+
+            // Only update if task wasn't cancelled
+            guard !Task.isCancelled else { return }
+
+            self.purchasedProductIDs = purchasedIDs
+
+            // SECURITY: Only trust StoreKit verified entitlements
+            // UserDefaults backup removed - was security vulnerability
+            self.isPremiumUnlocked = purchasedIDs.contains(premiumProductID)
         }
 
-        self.purchasedProductIDs = purchasedIDs
-
-        // Consolidate premium status checks to avoid multiple publications
-        // This prevents "Publishing changes from within view updates" warning
-        let isPremiumFromEntitlements = purchasedIDs.contains(premiumProductID)
-        let isPremiumFromBackup = UserDefaults.standard.bool(forKey: "premium_unlocked")
-        self.isPremiumUnlocked = isPremiumFromEntitlements || isPremiumFromBackup
+        // Wait for the task to complete
+        await checkPurchaseTask?.value
     }
 
     /// Listen for transaction updates
@@ -120,10 +193,20 @@ class StoreKitManager: ObservableObject {
             for await result in Transaction.updates {
                 do {
                     let transaction = try await self.checkVerified(result)
+
+                    // Update state first
                     await self.checkPurchaseStatus()
-                    await transaction.finish()
+
+                    // Only finish if verification succeeded AND state updated
+                    if await self.isPremiumUnlocked {
+                        await transaction.finish()
+                        print("✅ Transaction update processed and finished")
+                    } else {
+                        print("⚠️ Transaction verified but state not updated - will retry")
+                    }
                 } catch {
-                    print("❌ Transaction update verification failed: \(error.localizedDescription)")
+                    print("❌ Transaction verification failed: \(error.localizedDescription)")
+                    // Don't finish failed transactions - they'll retry on next app launch
                 }
             }
         }
@@ -141,20 +224,27 @@ class StoreKitManager: ObservableObject {
 
     /// Get product price string
     var premiumPriceString: String {
-        products.first(where: { $0.id == premiumProductID })?.displayPrice ?? "$9.99"
+        if let product = products.first(where: { $0.id == premiumProductID }) {
+            return product.displayPrice
+        }
+        return isLoading ? "Loading..." : "Price unavailable"
     }
 
+    #if DEBUG
     /// For testing purposes only - manually unlock premium
+    /// WARNING: Only available in DEBUG builds
     func unlockPremiumForTesting() {
-        UserDefaults.standard.set(true, forKey: "premium_unlocked")
         isPremiumUnlocked = true
+        print("⚠️ DEBUG: Premium unlocked for testing")
     }
 
     /// For testing purposes only - reset premium status
+    /// WARNING: Only available in DEBUG builds
     func resetPremiumForTesting() {
-        UserDefaults.standard.set(false, forKey: "premium_unlocked")
         isPremiumUnlocked = false
+        print("⚠️ DEBUG: Premium reset for testing")
     }
+    #endif
 }
 
 enum StoreError: LocalizedError {
@@ -162,6 +252,8 @@ enum StoreError: LocalizedError {
     case productNotFound
     case networkError
     case purchaseFailed(String)
+    case restoreFailed(String)
+    case noPreviousPurchases
 
     var errorDescription: String? {
         switch self {
@@ -170,9 +262,13 @@ enum StoreError: LocalizedError {
         case .productNotFound:
             return "Premium product not available"
         case .networkError:
-            return "Network connection error"
+            return "Cannot connect to the App Store"
         case .purchaseFailed(let reason):
             return "Purchase failed: \(reason)"
+        case .restoreFailed(let reason):
+            return "Restore failed: \(reason)"
+        case .noPreviousPurchases:
+            return "No previous purchases found"
         }
     }
 
@@ -186,6 +282,10 @@ enum StoreError: LocalizedError {
             return "Please check your internet connection and try again."
         case .purchaseFailed:
             return "Please try again or contact support if the problem persists."
+        case .restoreFailed:
+            return "Please try again later. If the problem continues, contact support."
+        case .noPreviousPurchases:
+            return "If you previously purchased premium on this device, try again in a few moments. Make sure you're signed in with the same Apple ID."
         }
     }
 }

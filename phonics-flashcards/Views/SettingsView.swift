@@ -8,13 +8,15 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var storeManager = StoreKitManager.shared
-    @StateObject private var progressManager = ProgressManager.shared
-    @StateObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var storeManager = StoreKitManager.shared
+    @ObservedObject private var progressManager = ProgressManager.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var showResetAlert = false
     @State private var showPrivacyPolicy = false
     @State private var showPremiumPaywall = false
+    @State private var showRestoreError = false
+    @State private var restoreErrorMessage = ""
 
     var body: some View {
         NavigationStack {
@@ -32,19 +34,30 @@ struct SettingsView: View {
                                 .foregroundColor(.orange)
                         }
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Premium status: \(storeManager.isPremiumUnlocked ? "Unlocked" : "Locked")")
 
                     if !storeManager.isPremiumUnlocked {
                         Button("Unlock Premium") {
                             showPremiumPaywall = true
                         }
                         .foregroundColor(.blue)
+                        .accessibilityLabel("Unlock premium")
+                        .accessibilityHint("Double tap to view premium upgrade options")
                     }
 
                     Button("Restore Purchases") {
                         Task {
-                            await storeManager.restorePurchases()
+                            do {
+                                try await storeManager.restorePurchases()
+                            } catch {
+                                restoreErrorMessage = error.localizedDescription
+                                showRestoreError = true
+                            }
                         }
                     }
+                    .accessibilityLabel("Restore purchases")
+                    .accessibilityHint("If you already purchased premium, double tap to restore your access")
                 }
 
                 // Appearance Section
@@ -59,6 +72,9 @@ struct SettingsView: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    .accessibilityLabel("Theme picker")
+                    .accessibilityValue(themeManager.currentTheme)
+                    .accessibilityHint("Choose between light, dark, or automatic theme")
                 }
 
                 // Statistics Section
@@ -92,6 +108,8 @@ struct SettingsView: View {
                     } label: {
                         Text("Reset All Progress")
                     }
+                    .accessibilityLabel("Reset all progress")
+                    .accessibilityHint("Warning: This will permanently delete all your learning progress")
                 }
 
                 // About Section
@@ -136,6 +154,8 @@ struct SettingsView: View {
                         }
                     }
                     .foregroundColor(.primary)
+                    .accessibilityLabel("Privacy policy")
+                    .accessibilityHint("Double tap to view privacy policy")
                 }
 
                 // Debug Section (only for testing)
@@ -158,6 +178,7 @@ struct SettingsView: View {
                     Button("Done") {
                         dismiss()
                     }
+                    .accessibilityLabel("Close settings")
                 }
             }
             .alert("Reset Progress", isPresented: $showResetAlert) {
@@ -173,6 +194,11 @@ struct SettingsView: View {
             }
             .sheet(isPresented: $showPremiumPaywall) {
                 PremiumPaywallView()
+            }
+            .alert("Restore Failed", isPresented: $showRestoreError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(restoreErrorMessage)
             }
         }
     }

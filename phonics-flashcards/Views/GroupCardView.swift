@@ -54,6 +54,8 @@ struct GroupCardView: View {
                 }
             }
             .buttonStyle(PlainButtonStyle())
+            .accessibilityLabel("\(group.name). \(group.totalCards) cards. \(group.premiumCards > 0 && !viewModel.isPremiumUnlocked ? "\(group.freeCards) free. " : "")Progress: \(Int(viewModel.getGroupProgressPercentage(for: group) * 100)) percent")
+            .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand and view cards")
 
             // Cards List
             if isExpanded {
@@ -73,6 +75,8 @@ struct GroupCardView: View {
                             )
                         }
                         .buttonStyle(PlainButtonStyle())
+                        .accessibilityLabel("\(card.title) card. \(card.words.count) words. \(viewModel.canAccessCard(card) ? "Progress: \(Int(viewModel.getProgressPercentage(for: card) * 100)) percent" : "Locked. Premium required")")
+                        .accessibilityHint(viewModel.canAccessCard(card) ? "Double tap to practice these words" : "Double tap to view premium upgrade options")
                     }
                 }
                 .padding(.top, 8)
@@ -133,6 +137,9 @@ struct CircularProgressView: View {
     var color: Color = .blue
     var size: CGFloat = 40
 
+    // Dynamic Type scaling for progress percentage text
+    @ScaledMetric(relativeTo: .caption) private var progressFontScale: CGFloat = 1.0
+
     var body: some View {
         ZStack {
             Circle()
@@ -148,12 +155,14 @@ struct CircularProgressView: View {
 
             if progress > 0 {
                 Text("\(Int(progress * 100))%")
-                    .font(.system(size: size * 0.3))
+                    .font(.system(size: size * 0.3 * progressFontScale))
                     .fontWeight(.semibold)
                     .foregroundColor(color)
             }
         }
         .frame(width: size, height: size)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Progress: \(Int(progress * 100)) percent")
     }
 }
 

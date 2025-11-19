@@ -12,6 +12,11 @@ struct FlashcardView: View {
     @StateObject private var viewModel: FlashcardViewModel
     @Environment(\.dismiss) private var dismiss
 
+    // Dynamic Type scaling for custom font sizes
+    @ScaledMetric(relativeTo: .largeTitle) private var phonicsTitleSize: CGFloat = 80
+    @ScaledMetric(relativeTo: .title) private var wordDisplaySize: CGFloat = 60
+    @ScaledMetric(relativeTo: .title2) private var navigationButtonSize: CGFloat = 50
+
     private var groupColor: Color {
         ColorTheme.colorForGroup(card.group)
     }
@@ -129,17 +134,21 @@ struct FlashcardView: View {
             // Progress bar
             ProgressView(value: viewModel.progress)
                 .tint(groupColor)
+                .accessibilityLabel("Learning progress")
+                .accessibilityValue("\(Int(viewModel.progress * 100)) percent complete")
 
             HStack {
                 Text("Word \(viewModel.currentWordIndex + 1) of \(viewModel.totalWords)")
                     .font(.caption)
                     .foregroundColor(.secondary)
+                    .accessibilityLabel("Current word: \(viewModel.currentWordIndex + 1) of \(viewModel.totalWords)")
 
                 Spacer()
 
                 Text("Mastery: \(Int(viewModel.masteryPercentage * 100))%")
                     .font(.caption)
                     .foregroundColor(.secondary)
+                    .accessibilityLabel("Mastery level: \(Int(viewModel.masteryPercentage * 100)) percent")
             }
         }
     }
@@ -148,8 +157,9 @@ struct FlashcardView: View {
         VStack(spacing: 20) {
             // Phonics title (always visible)
             Text(card.title)
-                .font(.system(size: 80, weight: .bold))
+                .font(.system(size: phonicsTitleSize, weight: .bold))
                 .foregroundColor(groupColor)
+                .accessibilityLabel("Sound pattern: \(card.title)")
 
             // Word display
             ZStack {
@@ -159,15 +169,21 @@ struct FlashcardView: View {
 
                 VStack(spacing: 12) {
                     highlightedWord(viewModel.currentWord, phonetic: card.title, color: groupColor)
-                        .font(.system(size: 60, weight: .semibold))
+                        .font(.system(size: wordDisplaySize, weight: .semibold))
+                        .accessibilityLabel("Word: \(viewModel.currentWord)")
 
                     if viewModel.isWordMastered(viewModel.currentWord) {
                         Image(systemName: "star.fill")
                             .font(.title)
                             .foregroundColor(.yellow)
+                            .accessibilityLabel("Word mastered")
                     }
                 }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ?
+                              "Word: \(viewModel.currentWord). Mastered" :
+                              "Word: \(viewModel.currentWord). Not yet mastered")
 
             // Mark as mastered button
             if !viewModel.isWordMastered(viewModel.currentWord) {
@@ -184,6 +200,8 @@ struct FlashcardView: View {
                         .background(Color.yellow)
                         .cornerRadius(12)
                 }
+                .accessibilityLabel("Mark word as mastered")
+                .accessibilityHint("Double tap to mark \(viewModel.currentWord) as learned")
             }
         }
     }
@@ -194,19 +212,23 @@ struct FlashcardView: View {
                 viewModel.previousWord()
             } label: {
                 Image(systemName: "chevron.left.circle.fill")
-                    .font(.system(size: 50))
+                    .font(.system(size: navigationButtonSize))
                     .foregroundColor(groupColor)
             }
             .disabled(viewModel.currentWordIndex == 0)
             .opacity(viewModel.currentWordIndex == 0 ? 0.3 : 1.0)
+            .accessibilityLabel("Previous word")
+            .accessibilityHint(viewModel.currentWordIndex == 0 ? "No previous words" : "Go to previous word")
 
             Button {
                 viewModel.nextWord()
             } label: {
                 Image(systemName: viewModel.isLastWord ? "checkmark.circle.fill" : "chevron.right.circle.fill")
-                    .font(.system(size: 50))
+                    .font(.system(size: navigationButtonSize))
                     .foregroundColor(groupColor)
             }
+            .accessibilityLabel(viewModel.isLastWord ? "Complete session" : "Next word")
+            .accessibilityHint(viewModel.isLastWord ? "Double tap to finish session" : "Go to next word")
         }
         .padding(.vertical)
     }
@@ -216,6 +238,7 @@ struct FlashcardView: View {
             Text("All Words")
                 .font(.caption)
                 .foregroundColor(.secondary)
+                .accessibilityLabel("Word list")
 
             ScrollViewReader { proxy in
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -252,10 +275,14 @@ struct FlashcardView: View {
                                 )
                                 .cornerRadius(8)
                             }
+                            .accessibilityLabel("\(word)\(viewModel.isWordMastered(word) ? ", mastered" : "")")
+                            .accessibilityHint(index == viewModel.currentWordIndex ? "Currently selected" : "Double tap to jump to this word")
                             .id(index) // Add ID for ScrollViewReader
                         }
                     }
                 }
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel("Horizontal word list")
                 .onChange(of: viewModel.currentWordIndex) { _, newIndex in
                     withAnimation {
                         proxy.scrollTo(newIndex, anchor: .center)

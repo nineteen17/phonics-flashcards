@@ -16,20 +16,22 @@ enum PhonicsRepositoryError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .fileNotFound:
-            return "Unable to find phonics data file. Please reinstall the app."
+            return "We're having trouble loading the flashcards."
         case .invalidData:
-            return "The phonics data is corrupted. Please reinstall the app."
-        case .decodingFailed(let error):
-            return "Failed to load phonics data: \(error.localizedDescription)"
+            return "We're having trouble loading the flashcards."
+        case .decodingFailed:
+            return "We're having trouble loading the flashcards."
         }
     }
 
     var recoverySuggestion: String? {
         switch self {
-        case .fileNotFound, .invalidData:
-            return "Try reinstalling the app from the App Store."
+        case .fileNotFound:
+            return "Please try restarting the app. If this doesn't help, try reinstalling from the App Store."
+        case .invalidData:
+            return "Please try restarting the app. If this doesn't help, try reinstalling from the App Store."
         case .decodingFailed:
-            return "Please contact support if this problem persists."
+            return "Please try restarting the app. If the problem continues, contact support and we'll help you right away!"
         }
     }
 }

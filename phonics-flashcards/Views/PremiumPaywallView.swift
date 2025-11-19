@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct PremiumPaywallView: View {
-    @StateObject private var storeManager = StoreKitManager.shared
+    @ObservedObject private var storeManager = StoreKitManager.shared
     @Environment(\.dismiss) private var dismiss
     @State private var isPurchasing = false
     @State private var showError = false
     @State private var errorMessage = ""
+
+    // Dynamic Type scaling for star icon
+    @ScaledMetric(relativeTo: .largeTitle) private var starIconSize: CGFloat = 80
 
     var body: some View {
         NavigationStack {
@@ -39,6 +42,7 @@ struct PremiumPaywallView: View {
                     Button("Close") {
                         dismiss()
                     }
+                    .accessibilityLabel("Close premium upgrade screen")
                 }
             }
             .alert("Error", isPresented: $showError) {
@@ -52,7 +56,7 @@ struct PremiumPaywallView: View {
     private var headerSection: some View {
         VStack(spacing: 16) {
             Image(systemName: "star.circle.fill")
-                .font(.system(size: 80))
+                .font(.system(size: starIconSize))
                 .foregroundColor(.yellow)
 
             Text("Unlock All Phonics Cards")
@@ -119,6 +123,8 @@ struct PremiumPaywallView: View {
                 .cornerRadius(12)
             }
             .disabled(isPurchasing)
+            .accessibilityLabel(isPurchasing ? "Purchasing premium" : "Unlock premium for \(storeManager.premiumPriceString)")
+            .accessibilityHint("One-time payment for lifetime access to all premium cards")
 
             Text("One-time payment • Lifetime access")
                 .font(.caption)
@@ -136,6 +142,8 @@ struct PremiumPaywallView: View {
                     .foregroundColor(.blue)
             }
             .disabled(isPurchasing)
+            .accessibilityLabel("Restore purchases")
+            .accessibilityHint("If you already purchased premium, double tap to restore your access")
 
             Text("Already purchased? Restore your access")
                 .font(.caption)
@@ -165,13 +173,14 @@ struct PremiumPaywallView: View {
         isPurchasing = true
 
         Task {
-            await storeManager.restorePurchases()
-            isPurchasing = false
-
-            if storeManager.isPremiumUnlocked {
+            do {
+                try await storeManager.restorePurchases()
+                // Success - premium was restored
+                isPurchasing = false
                 dismiss()
-            } else {
-                errorMessage = "No previous purchases found"
+            } catch {
+                isPurchasing = false
+                errorMessage = error.localizedDescription
                 showError = true
             }
         }

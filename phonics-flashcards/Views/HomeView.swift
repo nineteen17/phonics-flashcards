@@ -9,8 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-    @StateObject private var storeManager = StoreKitManager.shared
-    @StateObject private var repository = PhonicsRepository.shared
+    @ObservedObject private var storeManager = StoreKitManager.shared
+    @ObservedObject private var repository = PhonicsRepository.shared
     @State private var showingSettings = false
 
     var body: some View {
@@ -43,6 +43,8 @@ struct HomeView: View {
                     } label: {
                         Image(systemName: "gear")
                     }
+                    .accessibilityLabel("Settings")
+                    .accessibilityHint("Open settings menu")
                 }
             }
             .sheet(isPresented: $viewModel.showPremiumPaywall) {
@@ -88,6 +90,8 @@ struct HomeView: View {
         .padding()
         .background(Color.vibrantMint.opacity(0.2))
         .cornerRadius(12)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Statistics overview")
     }
 
     private var premiumBanner: some View {
@@ -111,6 +115,8 @@ struct HomeView: View {
             .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
+        .accessibilityLabel("Unlock all cards")
+        .accessibilityHint("Double tap to view premium upgrade options. Get access to all \(PhonicsRepository.shared.premiumCardsCount) premium cards")
     }
 }
 
@@ -139,6 +145,8 @@ struct StatBadge: View {
         .background(colorScheme == .dark ? Color(white: 0.15) : Color.white)
         .cornerRadius(10)
         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 2)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
     }
 }
 
