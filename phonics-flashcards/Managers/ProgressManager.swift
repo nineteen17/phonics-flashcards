@@ -95,7 +95,7 @@ class ProgressManager: ObservableObject {
     /// Attempt to recover data from backup if main save failed
     private func attemptRecoveryFromBackup() {
         guard let backupData = defaults.data(forKey: backupKey),
-              let decoded = try? JSONDecoder().decode(UserProgressData.self, from: backupData) else {
+              let _ = try? JSONDecoder().decode(UserProgressData.self, from: backupData) else {
             print("❌ No backup available for recovery")
             return
         }

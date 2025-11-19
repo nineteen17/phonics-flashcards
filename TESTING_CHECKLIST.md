@@ -134,7 +134,6 @@
   - Swipe left ANYWHERE in the middle area (not just the card)
   - **Verify:** Card moves with your finger as you drag ✅
   - **Verify:** Card rotates slightly as it moves ✅
-  - **Verify:** Card becomes slightly transparent (0.8 opacity) while dragging ✅
   - Release swipe (>80pt) → navigates to next word
   - **Verify:** Card springs back to center with animation ✅
   - Try multiple swipes in succession
@@ -143,7 +142,7 @@
 - [ ] **Swipe right to previous word**
   - Navigate to second or later word
   - Swipe right on the large swipeable area
-  - **Verify:** Card follows your finger with rotation/opacity ✅
+  - **Verify:** Card follows your finger with rotation ✅
   - Release swipe (>80pt) → navigates to previous word
   - **Verify:** Spring animation returns card to center ✅
   - On first word, swipe right → card drags but snaps back (no navigation) ✅
@@ -153,7 +152,6 @@
   - **Verify:** ONLY the word card moves (title stays fixed at top) ✅
   - **Verify:** Word card follows finger in real-time
   - **Verify:** Word card rotates with drag distance (offset/20)
-  - **Verify:** Word card opacity changes to 0.8 during drag
   - **Verify:** Phonics title remains stationary (doesn't move/rotate) ✅
   - Release before 80pt threshold
   - **Verify:** Word card snaps back to center (no navigation)

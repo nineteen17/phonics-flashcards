@@ -15,7 +15,6 @@ struct FlashcardView: View {
 
     @State private var showMasteredFeedback = false
     @State private var dragOffset: CGFloat = 0
-    @State private var isDragging = false
 
     // Dynamic Type scaling for custom font sizes
     @ScaledMetric(relativeTo: .largeTitle) private var phonicsTitleSize: CGFloat = 80
@@ -128,17 +127,16 @@ struct FlashcardView: View {
                         .foregroundColor(groupColor)
                         .accessibilityLabel("Sound pattern: \(card.title)")
 
-                    // Word card (animated - moves, rotates, fades)
+                    // Word card (animated - moves and rotates)
                     wordCard
                         .offset(x: dragOffset)
                         .rotationEffect(.degrees(Double(dragOffset / 20)))
-                        .opacity(isDragging ? 0.8 : 1.0)
                         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: dragOffset)
                         .transition(.asymmetric(
-                            insertion: .scale(scale: 0.9).combined(with: .opacity),
-                            removal: .scale(scale: 0.9).combined(with: .opacity)
+                            insertion: .scale(scale: 0.97).combined(with: .opacity),
+                            removal: .scale(scale: 0.97).combined(with: .opacity)
                         ))
-                        .animation(.easeInOut(duration: 0.2), value: viewModel.currentWordIndex)
+                        .animation(.easeInOut(duration: 0.08), value: viewModel.currentWordIndex)
                         .id(viewModel.currentWordIndex) // Force re-render on word change
                 }
             }
@@ -147,12 +145,10 @@ struct FlashcardView: View {
             .gesture(
                 DragGesture(minimumDistance: 20)
                     .onChanged { gesture in
-                        isDragging = true
                         dragOffset = gesture.translation.width
                     }
                     .onEnded { gesture in
                         handleSwipe(gesture: gesture)
-                        isDragging = false
 
                         // Animate back to center
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -186,8 +182,11 @@ struct FlashcardView: View {
         // Require minimum swipe distance (80pt for better intent detection)
         guard abs(horizontalAmount) > 80 else { return }
 
+        // Play swoosh sound
+        SoundManager.shared.playSwoosh()
+
         // Use withAnimation for smooth word transitions
-        withAnimation(.easeInOut(duration: 0.2)) {
+        withAnimation(.easeInOut(duration: 0.08)) {
             if horizontalAmount < 0 {
                 // Swipe left - next word
                 if viewModel.isLastWord {
@@ -243,6 +242,11 @@ struct FlashcardView: View {
                 // Star button for mastering word
                 HStack(spacing: 8) {
                     Button {
+                        // Only play sound if not already mastered
+                        if !viewModel.isWordMastered(viewModel.currentWord) {
+                            SoundManager.shared.playSparkle()
+                        }
+
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                             viewModel.markCurrentWordMastered()
                             showMasteredFeedback = true
