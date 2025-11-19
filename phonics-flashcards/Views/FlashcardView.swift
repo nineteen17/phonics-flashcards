@@ -121,12 +121,26 @@ struct FlashcardView: View {
 
             // Main swipeable area (expanded for better UX)
             ZStack {
-                // Main flashcard with Tinder-style drag animation
-                flashcardContent
-                    .offset(x: dragOffset)
-                    .rotationEffect(.degrees(Double(dragOffset / 20)))
-                    .opacity(isDragging ? 0.8 : 1.0)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: dragOffset)
+                VStack(spacing: isIPad ? 30 : 20) {
+                    // Phonics title (stays fixed - no animation)
+                    Text(card.title)
+                        .font(.system(size: adaptivePhonicsSize, weight: .bold))
+                        .foregroundColor(groupColor)
+                        .accessibilityLabel("Sound pattern: \(card.title)")
+
+                    // Word card (animated - moves, rotates, fades)
+                    wordCard
+                        .offset(x: dragOffset)
+                        .rotationEffect(.degrees(Double(dragOffset / 20)))
+                        .opacity(isDragging ? 0.8 : 1.0)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: dragOffset)
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 0.9).combined(with: .opacity),
+                            removal: .scale(scale: 0.9).combined(with: .opacity)
+                        ))
+                        .animation(.easeInOut(duration: 0.2), value: viewModel.currentWordIndex)
+                        .id(viewModel.currentWordIndex) // Force re-render on word change
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle()) // Make entire area tappable/swipeable
@@ -172,18 +186,21 @@ struct FlashcardView: View {
         // Require minimum swipe distance (80pt for better intent detection)
         guard abs(horizontalAmount) > 80 else { return }
 
-        if horizontalAmount < 0 {
-            // Swipe left - next word
-            if viewModel.isLastWord {
-                // On last word, swiping left completes the session
-                viewModel.completeSession()
+        // Use withAnimation for smooth word transitions
+        withAnimation(.easeInOut(duration: 0.2)) {
+            if horizontalAmount < 0 {
+                // Swipe left - next word
+                if viewModel.isLastWord {
+                    // On last word, swiping left completes the session
+                    viewModel.completeSession()
+                } else {
+                    viewModel.nextWord()
+                }
             } else {
-                viewModel.nextWord()
-            }
-        } else {
-            // Swipe right - previous word (only if not on first word)
-            if viewModel.currentWordIndex > 0 {
-                viewModel.previousWord()
+                // Swipe right - previous word (only if not on first word)
+                if viewModel.currentWordIndex > 0 {
+                    viewModel.previousWord()
+                }
             }
         }
     }
@@ -212,61 +229,52 @@ struct FlashcardView: View {
         }
     }
 
-    private var flashcardContent: some View {
-        VStack(spacing: isIPad ? 30 : 20) {
-            // Phonics title (always visible)
-            Text(card.title)
-                .font(.system(size: adaptivePhonicsSize, weight: .bold))
-                .foregroundColor(groupColor)
-                .accessibilityLabel("Sound pattern: \(card.title)")
+    private var wordCard: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(groupColor.opacity(0.1))
+                .frame(height: isIPad ? 280 : 200)
 
-            // Word display with mastered star button
-            ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(groupColor.opacity(0.1))
-                    .frame(height: isIPad ? 280 : 200)
+            VStack(spacing: 16) {
+                highlightedWord(viewModel.currentWord, phonetic: card.title, color: groupColor)
+                    .font(.system(size: adaptiveWordSize, weight: .semibold))
+                    .accessibilityLabel("Word: \(viewModel.currentWord)")
 
-                VStack(spacing: 16) {
-                    highlightedWord(viewModel.currentWord, phonetic: card.title, color: groupColor)
-                        .font(.system(size: adaptiveWordSize, weight: .semibold))
-                        .accessibilityLabel("Word: \(viewModel.currentWord)")
-
-                    // Star button for mastering word
-                    HStack(spacing: 8) {
-                        Button {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                                viewModel.markCurrentWordMastered()
-                                showMasteredFeedback = true
-                            }
-                            // Hide feedback after delay
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                withAnimation {
-                                    showMasteredFeedback = false
-                                }
-                            }
-                        } label: {
-                            Image(systemName: viewModel.isWordMastered(viewModel.currentWord) ? "star.fill" : "star")
-                                .font(.system(size: isIPad ? 44 : 36))
-                                .foregroundColor(.yellow)
-                                .scaleEffect(viewModel.isWordMastered(viewModel.currentWord) ? 1.0 : 0.9)
+                // Star button for mastering word
+                HStack(spacing: 8) {
+                    Button {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                            viewModel.markCurrentWordMastered()
+                            showMasteredFeedback = true
                         }
-                        .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ? "Word mastered" : "Mark as mastered")
-                        .accessibilityHint(viewModel.isWordMastered(viewModel.currentWord) ? "Already mastered" : "Double tap to mark \(viewModel.currentWord) as learned")
-
-                        if showMasteredFeedback && viewModel.isWordMastered(viewModel.currentWord) {
-                            Text("Mastered!")
-                                .font(.headline)
-                                .foregroundColor(groupColor)
-                                .transition(.scale.combined(with: .opacity))
+                        // Hide feedback after delay
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation {
+                                showMasteredFeedback = false
+                            }
                         }
+                    } label: {
+                        Image(systemName: viewModel.isWordMastered(viewModel.currentWord) ? "star.fill" : "star")
+                            .font(.system(size: isIPad ? 44 : 36))
+                            .foregroundColor(.yellow)
+                            .scaleEffect(viewModel.isWordMastered(viewModel.currentWord) ? 1.0 : 0.9)
+                    }
+                    .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ? "Word mastered" : "Mark as mastered")
+                    .accessibilityHint(viewModel.isWordMastered(viewModel.currentWord) ? "Already mastered" : "Double tap to mark \(viewModel.currentWord) as learned")
+
+                    if showMasteredFeedback && viewModel.isWordMastered(viewModel.currentWord) {
+                        Text("Mastered!")
+                            .font(.headline)
+                            .foregroundColor(groupColor)
+                            .transition(.scale.combined(with: .opacity))
                     }
                 }
             }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ?
-                              "Word: \(viewModel.currentWord). Mastered" :
-                              "Word: \(viewModel.currentWord). Not yet mastered")
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ?
+                          "Word: \(viewModel.currentWord). Mastered" :
+                          "Word: \(viewModel.currentWord). Not yet mastered")
     }
 
 

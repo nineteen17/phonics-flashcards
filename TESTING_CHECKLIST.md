@@ -150,11 +150,13 @@
 
 - [ ] **Interactive drag feedback (Tinder-style)**
   - Start dragging card but don't release
-  - **Verify:** Card follows finger in real-time
-  - **Verify:** Rotation increases with drag distance (offset/20)
-  - **Verify:** Opacity changes to 0.8 during drag
+  - **Verify:** ONLY the word card moves (title stays fixed at top) ✅
+  - **Verify:** Word card follows finger in real-time
+  - **Verify:** Word card rotates with drag distance (offset/20)
+  - **Verify:** Word card opacity changes to 0.8 during drag
+  - **Verify:** Phonics title remains stationary (doesn't move/rotate) ✅
   - Release before 80pt threshold
-  - **Verify:** Card snaps back to center (no navigation)
+  - **Verify:** Word card snaps back to center (no navigation)
   - **Verify:** Smooth spring animation (0.3s response, 0.7 damping)
 
 - [ ] **Swipe to complete session**
@@ -176,6 +178,14 @@
   - Try vertical swipes → card may move but won't navigate
   - **Verify:** Only horizontal swipes trigger navigation
   - Verify gestures work on iPad and iPhone
+
+- [ ] **Word transition smoothness (CRITICAL)**
+  - Navigate between words with swipes
+  - **Verify:** Old word fades out quickly (0.2s) - NO lingering ✅
+  - **Verify:** New word fades in with scale animation ✅
+  - **Verify:** Phonics title never changes (always shows same pattern) ✅
+  - **Verify:** Transition feels crisp and responsive
+  - No ghosting or overlap of old/new words
 
 - [ ] **Swipe vs tap interaction**
   - Verify can still tap star button while swiping works

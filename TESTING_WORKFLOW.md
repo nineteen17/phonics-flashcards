@@ -42,18 +42,24 @@ Follow this checklist in order. Check off each item as you complete it.
 
 - [ ] **Test Tinder-style drag animation:**
   - [ ] Start dragging the card but don't release
-  - [ ] **Verify:** Card follows your finger in real-time ✅
-  - [ ] **Verify:** Card rotates slightly as you drag (offset/20) ✅
-  - [ ] **Verify:** Card becomes slightly see-through (0.8 opacity) ✅
+  - [ ] **Verify:** ONLY the word card moves (phonics title stays fixed) ✅
+  - [ ] **Verify:** Word card follows your finger in real-time ✅
+  - [ ] **Verify:** Word card rotates slightly as you drag (offset/20) ✅
+  - [ ] **Verify:** Word card becomes slightly see-through (0.8 opacity) ✅
+  - [ ] **Verify:** Phonics title at top does NOT move or rotate ✅
   - [ ] Release drag before 80pt
-  - [ ] **Verify:** Card snaps back to center with spring animation ✅
+  - [ ] **Verify:** Word card snaps back to center with spring animation ✅
 
 - [ ] **Swipe left to next word:**
   - [ ] Swipe left >80pt → navigates to next word
-  - [ ] **Verify:** Card springs back to center after navigation ✅
-  - [ ] **Verify:** New word displays smoothly
+  - [ ] **Verify:** Word card springs back to center after navigation ✅
+  - [ ] **Verify:** Old word fades out quickly (no lingering) ✅
+  - [ ] **Verify:** New word fades in with scale animation ✅
+  - [ ] **Verify:** Phonics title stays the same throughout ✅
+  - [ ] **Verify:** Transition is smooth and crisp (0.2s)
   - [ ] Try multiple rapid swipes → all gestures recognized
   - [ ] **Verify:** No lag or dropped gestures
+  - [ ] **Verify:** No ghosting or overlapping words
 
 - [ ] **Swipe right to previous word:**
   - [ ] Navigate to second or later word
@@ -293,11 +299,13 @@ Follow this checklist in order. Check off each item as you complete it.
 
 - [ ] **Test real-time drag animation:**
   - [ ] Start dragging left slowly
-  - [ ] **Verify:** Card moves with your finger ✅
-  - [ ] **Verify:** Card rotates proportionally (offset/20) ✅
-  - [ ] **Verify:** Card opacity changes to 0.8 ✅
+  - [ ] **Verify:** ONLY word card moves (title stays fixed) ✅
+  - [ ] **Verify:** Word card moves with your finger ✅
+  - [ ] **Verify:** Word card rotates proportionally (offset/20) ✅
+  - [ ] **Verify:** Word card opacity changes to 0.8 ✅
+  - [ ] **Verify:** Phonics title does NOT move/rotate ✅
   - [ ] Release before 80pt threshold
-  - [ ] **Verify:** Card springs back to center smoothly
+  - [ ] **Verify:** Word card springs back to center smoothly
   - [ ] Repeat dragging right
   - [ ] **Verify:** Same animation behavior
 
