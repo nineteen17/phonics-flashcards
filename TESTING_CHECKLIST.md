@@ -128,33 +128,53 @@
   - Wait or pull-to-refresh
   - Verify price loads successfully after retry
 
-### ✅ Swipe Gesture Navigation (CRITICAL)
+### ✅ Swipe Gesture Navigation with Tinder-Style Animation (CRITICAL)
 - [ ] **Swipe left to next word**
   - Open any flashcard
-  - Swipe left on the card area
-  - Verify navigates to next word
-  - Verify animation is smooth
+  - Swipe left ANYWHERE in the middle area (not just the card)
+  - **Verify:** Card moves with your finger as you drag ✅
+  - **Verify:** Card rotates slightly as it moves ✅
+  - **Verify:** Card becomes slightly transparent (0.8 opacity) while dragging ✅
+  - Release swipe (>80pt) → navigates to next word
+  - **Verify:** Card springs back to center with animation ✅
   - Try multiple swipes in succession
-  - Verify no lag or dropped gestures
+  - **Verify:** No lag or dropped gestures
 
 - [ ] **Swipe right to previous word**
   - Navigate to second or later word
-  - Swipe right on the card area
-  - Verify navigates to previous word
-  - Verify smooth animation
-  - On first word, swipe right does nothing ✅
+  - Swipe right on the large swipeable area
+  - **Verify:** Card follows your finger with rotation/opacity ✅
+  - Release swipe (>80pt) → navigates to previous word
+  - **Verify:** Spring animation returns card to center ✅
+  - On first word, swipe right → card drags but snaps back (no navigation) ✅
+
+- [ ] **Interactive drag feedback (Tinder-style)**
+  - Start dragging card but don't release
+  - **Verify:** Card follows finger in real-time
+  - **Verify:** Rotation increases with drag distance (offset/20)
+  - **Verify:** Opacity changes to 0.8 during drag
+  - Release before 80pt threshold
+  - **Verify:** Card snaps back to center (no navigation)
+  - **Verify:** Smooth spring animation (0.3s response, 0.7 damping)
 
 - [ ] **Swipe to complete session**
   - Navigate to last word in flashcard
-  - Swipe left (as if going to next)
-  - Verify "Session Complete!" popup appears ✅
-  - Verify popup shows total words and mastery percentage
+  - Swipe left >80pt (as if going to next)
+  - **Verify:** "Session Complete!" popup appears ✅
+  - **Verify:** Popup shows total words and mastery percentage
   - This is CRITICAL - users must know to swipe left on last word
 
+- [ ] **Expanded swipe area**
+  - **Verify:** Can swipe anywhere in middle section (not just card) ✅
+  - Swipe area covers entire space between header and word list
+  - Much larger target area than previous button-only navigation
+  - More intuitive and easier to use
+
 - [ ] **Swipe gesture boundaries**
-  - Verify vertical swipes don't trigger navigation
-  - Verify diagonal swipes only respond to horizontal component
-  - Verify minimum swipe distance required (not accidental touches)
+  - Try short swipes (<80pt) → card drags but snaps back
+  - **Verify:** Minimum 80pt swipe required for navigation ✅
+  - Try vertical swipes → card may move but won't navigate
+  - **Verify:** Only horizontal swipes trigger navigation
   - Verify gestures work on iPad and iPhone
 
 - [ ] **Swipe vs tap interaction**
@@ -180,6 +200,35 @@
   - On mastered word: star is filled (solid yellow)
   - Verify tapping filled star does nothing (already mastered)
   - Verify accessibility label changes based on state
+
+## Orientation Lock (iPhone Only)
+
+### ✅ Portrait Mode Restriction (CRITICAL)
+- [ ] **iPhone portrait lock**
+  - Open app on iPhone (any model up to iPhone 16 Pro Max)
+  - Open any flashcard
+  - Try rotating device to landscape
+  - **Verify:** App stays locked in portrait mode ✅
+  - **Verify:** Screen does NOT rotate to landscape
+  - Navigate to other screens (Home, Settings)
+  - Return to flashcard
+  - **Verify:** Still locked to portrait
+
+- [ ] **iPad landscape allowed**
+  - Open app on iPad (or iPad simulator)
+  - Open any flashcard
+  - Rotate device to landscape
+  - **Verify:** iPad DOES rotate to landscape (orientation lock NOT applied) ✅
+  - **Verify:** Layout adapts properly to landscape
+  - All elements remain usable in both orientations
+
+- [ ] **Orientation lock transitions**
+  - Navigate from Home to Flashcard on iPhone
+  - **Verify:** Portrait lock applies when entering FlashcardView
+  - Navigate back to Home
+  - **Verify:** Orientation lock removed (can rotate again if Home supports it)
+  - Exit and re-enter FlashcardView
+  - **Verify:** Portrait lock re-applies correctly
 
 ## iPad Layout Optimization
 
@@ -365,7 +414,9 @@
 - ✅ Premium purchase flow
 - ✅ Restore purchases
 - ✅ Progress data persistence
-- ✅ Swipe gesture navigation (especially completing session on last word)
+- ✅ Swipe gesture navigation with Tinder-style animation
+- ✅ Session completion on last word swipe (80pt threshold)
+- ✅ iPhone portrait lock (landscape disabled)
 - ✅ No crashes or data loss
 
 **HIGH (Should Pass):**

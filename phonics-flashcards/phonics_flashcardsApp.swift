@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct phonics_flashcardsApp: App {
+    // AppDelegate for orientation control
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     // Initialize managers
     @StateObject private var storeManager = StoreKitManager.shared
     @StateObject private var progressManager = ProgressManager.shared

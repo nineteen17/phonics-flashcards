@@ -34,18 +34,39 @@ Follow this checklist in order. Check off each item as you complete it.
 - [ ] Progress bar shows at top
 - [ ] "Word 1 of X" displays correctly
 
-### Navigate Flashcards with Swipe Gestures (CRITICAL)
-- [ ] **Swipe left** on card area → navigates to next word
-- [ ] **Verify:** Word changes smoothly with animation
-- [ ] **Swipe right** on card area → goes back to previous word
-- [ ] **Verify:** Animation is smooth
-- [ ] On first word, **swipe right** does nothing (expected) ✅
-- [ ] Navigate to last word
-- [ ] **Swipe left** on last word (as if going to next)
-- [ ] **Verify:** "Session Complete!" alert appears ✅
-- [ ] **CRITICAL:** This is how users complete sessions - must work perfectly
-- [ ] Try multiple rapid swipes → all gestures recognized
-- [ ] **Verify:** No lag or dropped gestures
+### Navigate Flashcards with Tinder-Style Swipe Gestures (CRITICAL)
+- [ ] **Test expanded swipe area:**
+  - [ ] Try swiping ANYWHERE in the middle section (not just the card)
+  - [ ] **Verify:** Entire area between header and word list is swipeable ✅
+  - [ ] Much larger and more intuitive than old button navigation
+
+- [ ] **Test Tinder-style drag animation:**
+  - [ ] Start dragging the card but don't release
+  - [ ] **Verify:** Card follows your finger in real-time ✅
+  - [ ] **Verify:** Card rotates slightly as you drag (offset/20) ✅
+  - [ ] **Verify:** Card becomes slightly see-through (0.8 opacity) ✅
+  - [ ] Release drag before 80pt
+  - [ ] **Verify:** Card snaps back to center with spring animation ✅
+
+- [ ] **Swipe left to next word:**
+  - [ ] Swipe left >80pt → navigates to next word
+  - [ ] **Verify:** Card springs back to center after navigation ✅
+  - [ ] **Verify:** New word displays smoothly
+  - [ ] Try multiple rapid swipes → all gestures recognized
+  - [ ] **Verify:** No lag or dropped gestures
+
+- [ ] **Swipe right to previous word:**
+  - [ ] Navigate to second or later word
+  - [ ] Swipe right >80pt → goes back to previous word
+  - [ ] **Verify:** Spring animation is smooth ✅
+  - [ ] On first word, swipe right → card drags but snaps back (no navigation) ✅
+
+- [ ] **Complete session with swipe:**
+  - [ ] Navigate to last word
+  - [ ] **Swipe left >80pt** (as if going to next)
+  - [ ] **Verify:** "Session Complete!" alert appears ✅
+  - [ ] **CRITICAL:** This is how users complete sessions - must work perfectly
+  - [ ] **Verify:** Shows total words and mastery percentage
 
 ### Mark Words as Mastered (Star Button)
 - [ ] On any word, verify empty star icon displays below word
@@ -261,27 +282,42 @@ Follow this checklist in order. Check off each item as you complete it.
 
 ## Part 8: Error Handling & Edge Cases (15 minutes)
 
-### Comprehensive Swipe Gesture Testing (CRITICAL)
+### Comprehensive Tinder-Style Swipe Testing (CRITICAL)
 - [ ] Open any flashcard
-- [ ] **Test horizontal swipes:**
+- [ ] **Test expanded swipe area:**
+  - [ ] Swipe anywhere in middle section → works ✅
+  - [ ] Swipe on card itself → works
+  - [ ] Swipe above card → works
+  - [ ] Swipe below card → works
+  - [ ] **Verify:** Entire middle area is swipeable
+
+- [ ] **Test real-time drag animation:**
+  - [ ] Start dragging left slowly
+  - [ ] **Verify:** Card moves with your finger ✅
+  - [ ] **Verify:** Card rotates proportionally (offset/20) ✅
+  - [ ] **Verify:** Card opacity changes to 0.8 ✅
+  - [ ] Release before 80pt threshold
+  - [ ] **Verify:** Card springs back to center smoothly
+  - [ ] Repeat dragging right
+  - [ ] **Verify:** Same animation behavior
+
+- [ ] **Test swipe threshold (80pt):**
+  - [ ] Drag card ~50pt and release → snaps back (no navigation)
+  - [ ] Drag card ~79pt and release → snaps back (no navigation)
+  - [ ] Drag card ~81pt and release → navigates ✅
+  - [ ] **Verify:** 80pt threshold is consistent and reliable
+
+- [ ] **Test rapid swiping:**
   - [ ] Swipe left → next word
-  - [ ] Swipe right → previous word
-  - [ ] Multiple rapid swipes → all recognized
-  - [ ] **Verify:** No dropped or laggy gestures
-
-- [ ] **Test vertical swipes:**
-  - [ ] Swipe up on card → nothing happens (correct)
-  - [ ] Swipe down on card → nothing happens (correct)
-  - [ ] **Verify:** Only horizontal swipes trigger navigation
-
-- [ ] **Test diagonal swipes:**
-  - [ ] Swipe diagonally (e.g., up-left)
-  - [ ] **Verify:** Only horizontal component triggers navigation
-  - [ ] Should navigate left/right based on horizontal direction
+  - [ ] Immediately swipe left again → next word
+  - [ ] Continue rapidly 5-10 times
+  - [ ] **Verify:** All swipes recognized
+  - [ ] **Verify:** No lag or dropped gestures
+  - [ ] **Verify:** Animation stays smooth
 
 - [ ] **Test session completion on last word:**
   - [ ] Navigate to last word
-  - [ ] Swipe left (as if next)
+  - [ ] Swipe left >80pt (as if next)
   - [ ] **Verify:** "Session Complete!" popup appears immediately ✅
   - [ ] **Verify:** Shows total words and mastery percentage
   - [ ] Tap "Review Again"
@@ -290,11 +326,12 @@ Follow this checklist in order. Check off each item as you complete it.
   - [ ] **Verify:** Popup appears again (repeatable)
 
 - [ ] **Test gesture boundaries:**
-  - [ ] On first word, swipe right → nothing happens ✅
+  - [ ] On first word, swipe right >80pt → card drags but snaps back ✅
   - [ ] Can still tap star button (no conflict)
   - [ ] Can still tap words in bottom list (no conflict)
   - [ ] Can still scroll word list on iPhone (no conflict)
   - [ ] iPad grid still tappable (no conflict)
+  - [ ] Verify dragging doesn't interfere with other tap targets
 
 ### Test Airplane Mode During Use
 - [ ] Open a flashcard, mark some words mastered
@@ -339,22 +376,29 @@ Follow this checklist in order. Check off each item as you complete it.
 
 ## Part 9: Multi-Screen & Layout Testing (10 minutes)
 
-### Portrait Orientation
-- [ ] Test app in portrait mode
-- [ ] Open flashcard view
-- [ ] **Verify:** All content visible
-- [ ] **Verify:** Buttons not cut off
-- [ ] **Verify:** Word list scrollable
-- [ ] Navigate to home
-- [ ] **Verify:** Groups display properly
-- [ ] Open Settings
-- [ ] **Verify:** All sections visible
+### iPhone Portrait Lock (CRITICAL)
+- [ ] **Test on iPhone (any model up to iPhone 16 Pro Max):**
+  - [ ] Open any flashcard in portrait mode
+  - [ ] **Verify:** All content visible and well-laid out
+  - [ ] Try rotating device to landscape
+  - [ ] **Verify:** App STAYS in portrait mode (does NOT rotate) ✅
+  - [ ] **CRITICAL:** iPhone flashcards are portrait-only for better UX
+  - [ ] Navigate to Home screen
+  - [ ] Return to flashcard
+  - [ ] **Verify:** Portrait lock still active
+  - [ ] Force quit app and reopen
+  - [ ] Open flashcard
+  - [ ] **Verify:** Portrait lock applies immediately
 
-### Landscape Orientation (if supported)
-- [ ] Rotate device to landscape
-- [ ] Navigate through app
-- [ ] **Verify:** Layout adapts or locks to portrait
-- [ ] **Verify:** No crashes
+### iPad Landscape Support
+- [ ] **Test on iPad (any size):**
+  - [ ] Open any flashcard in portrait mode
+  - [ ] **Verify:** All content visible
+  - [ ] Rotate iPad to landscape
+  - [ ] **Verify:** iPad DOES rotate to landscape ✅
+  - [ ] **Verify:** Layout adapts properly (grid, larger fonts work)
+  - [ ] Swipe gestures still work in landscape
+  - [ ] All elements remain usable in both orientations
 
 ### Different Device Sizes (if testing on multiple devices)
 - [ ] **On iPhone SE (small screen):**

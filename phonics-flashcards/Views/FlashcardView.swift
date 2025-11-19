@@ -14,6 +14,8 @@ struct FlashcardView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @State private var showMasteredFeedback = false
+    @State private var dragOffset: CGFloat = 0
+    @State private var isDragging = false
 
     // Dynamic Type scaling for custom font sizes
     @ScaledMetric(relativeTo: .largeTitle) private var phonicsTitleSize: CGFloat = 80
@@ -117,18 +119,33 @@ struct FlashcardView: View {
             // Header with progress
             headerView
 
-            Spacer()
+            // Main swipeable area (expanded for better UX)
+            ZStack {
+                // Main flashcard with Tinder-style drag animation
+                flashcardContent
+                    .offset(x: dragOffset)
+                    .rotationEffect(.degrees(Double(dragOffset / 20)))
+                    .opacity(isDragging ? 0.8 : 1.0)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: dragOffset)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .contentShape(Rectangle()) // Make entire area tappable/swipeable
+            .gesture(
+                DragGesture(minimumDistance: 20)
+                    .onChanged { gesture in
+                        isDragging = true
+                        dragOffset = gesture.translation.width
+                    }
+                    .onEnded { gesture in
+                        handleSwipe(gesture: gesture)
+                        isDragging = false
 
-            // Main flashcard
-            flashcardContent
-                .gesture(
-                    DragGesture(minimumDistance: 50)
-                        .onEnded { gesture in
-                            handleSwipe(gesture: gesture)
+                        // Animate back to center
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                            dragOffset = 0
                         }
-                )
-
-            Spacer()
+                    }
+            )
 
             // Word list
             wordListView
@@ -146,27 +163,27 @@ struct FlashcardView: View {
         } message: {
             Text("You've completed all \(viewModel.totalWords) words!\n\nMastery: \(Int(viewModel.masteryPercentage * 100))%")
         }
+        .supportedOrientations(isIPad ? .all : .portrait)
     }
 
     private func handleSwipe(gesture: DragGesture.Value) {
         let horizontalAmount = gesture.translation.width
-        let verticalAmount = gesture.translation.height
 
-        // Only respond to primarily horizontal swipes
-        if abs(horizontalAmount) > abs(verticalAmount) {
-            if horizontalAmount < 0 {
-                // Swipe left - next word
-                if viewModel.isLastWord {
-                    // On last word, swiping right completes the session
-                    viewModel.completeSession()
-                } else {
-                    viewModel.nextWord()
-                }
+        // Require minimum swipe distance (80pt for better intent detection)
+        guard abs(horizontalAmount) > 80 else { return }
+
+        if horizontalAmount < 0 {
+            // Swipe left - next word
+            if viewModel.isLastWord {
+                // On last word, swiping left completes the session
+                viewModel.completeSession()
             } else {
-                // Swipe right - previous word (only if not on first word)
-                if viewModel.currentWordIndex > 0 {
-                    viewModel.previousWord()
-                }
+                viewModel.nextWord()
+            }
+        } else {
+            // Swipe right - previous word (only if not on first word)
+            if viewModel.currentWordIndex > 0 {
+                viewModel.previousWord()
             }
         }
     }
@@ -352,5 +369,26 @@ struct FlashcardView: View {
                 isPremium: false
             )
         )
+    }
+}
+
+// MARK: - View Extension for Orientation Lock
+extension View {
+    func supportedOrientations(_ orientations: UIInterfaceOrientationMask) -> some View {
+        self.onAppear {
+            AppDelegate.orientationLock = orientations
+        }
+        .onDisappear {
+            AppDelegate.orientationLock = .all
+        }
+    }
+}
+
+// MARK: - AppDelegate Helper for Orientation
+class AppDelegate: NSObject, UIApplicationDelegate {
+    static var orientationLock = UIInterfaceOrientationMask.all
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
     }
 }
