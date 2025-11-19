@@ -97,6 +97,11 @@ class FlashcardViewModel: ObservableObject {
         return Double(masteredWords.count) / Double(card.words.count)
     }
 
+    /// Complete the session (triggered by swipe on last word)
+    func completeSession() {
+        sessionComplete = true
+    }
+
     /// Reset session
     func resetSession() {
         currentWordIndex = 0

@@ -34,18 +34,28 @@ Follow this checklist in order. Check off each item as you complete it.
 - [ ] Progress bar shows at top
 - [ ] "Word 1 of X" displays correctly
 
-### Navigate Flashcards
-- [ ] Tap next button (right chevron) → word changes
-- [ ] Tap previous button (left chevron) → goes back
-- [ ] Previous button disabled on first word
-- [ ] Last word shows checkmark button instead of right chevron
-- [ ] Tap checkmark on last word → session complete alert appears
+### Navigate Flashcards with Swipe Gestures (CRITICAL)
+- [ ] **Swipe left** on card area → navigates to next word
+- [ ] **Verify:** Word changes smoothly with animation
+- [ ] **Swipe right** on card area → goes back to previous word
+- [ ] **Verify:** Animation is smooth
+- [ ] On first word, **swipe right** does nothing (expected) ✅
+- [ ] Navigate to last word
+- [ ] **Swipe left** on last word (as if going to next)
+- [ ] **Verify:** "Session Complete!" alert appears ✅
+- [ ] **CRITICAL:** This is how users complete sessions - must work perfectly
+- [ ] Try multiple rapid swipes → all gestures recognized
+- [ ] **Verify:** No lag or dropped gestures
 
-### Mark Words as Mastered
-- [ ] On any word, tap "Mark as Mastered" button
-- [ ] Gold star appears on word
-- [ ] Mastery percentage increases at top
-- [ ] Scroll word list at bottom → mastered word has star badge
+### Mark Words as Mastered (Star Button)
+- [ ] On any word, verify empty star icon displays below word
+- [ ] Tap the empty star icon
+- [ ] **Verify:** Star fills with spring animation ✅
+- [ ] **Verify:** "Mastered!" text appears briefly next to star ✅
+- [ ] **Verify:** "Mastered!" text fades after ~1.5 seconds ✅
+- [ ] **Verify:** Mastery percentage increases at top
+- [ ] Scroll word list at bottom → mastered word has filled star badge
+- [ ] Navigate to different word and back → star remains filled
 - [ ] Tap different word in bottom list → jumps to that word correctly
 
 ### Test Progress Persistence
@@ -227,10 +237,11 @@ Follow this checklist in order. Check off each item as you complete it.
 - [ ] Swipe to next/previous buttons
 - [ ] **Verify:** Buttons have clear labels ("Next word", "Previous word")
 - [ ] **Verify:** Disabled states announced
-- [ ] Swipe to "Mark as Mastered" button
-- [ ] **Verify:** Clear label and hint
-- [ ] Double-tap to activate
-- [ ] **Verify:** Star/mastery announced
+- [ ] Swipe to star button (mastered button)
+- [ ] **Verify:** Label says "Mark as mastered" (empty star) or "Word mastered" (filled star)
+- [ ] **Verify:** Clear hint provided
+- [ ] Double-tap to activate (if not already mastered)
+- [ ] **Verify:** Mastery state announced correctly
 
 ### Test Premium Flow
 - [ ] Navigate to Settings with VoiceOver
@@ -248,13 +259,48 @@ Follow this checklist in order. Check off each item as you complete it.
 
 ---
 
-## Part 8: Error Handling & Edge Cases (10 minutes)
+## Part 8: Error Handling & Edge Cases (15 minutes)
+
+### Comprehensive Swipe Gesture Testing (CRITICAL)
+- [ ] Open any flashcard
+- [ ] **Test horizontal swipes:**
+  - [ ] Swipe left → next word
+  - [ ] Swipe right → previous word
+  - [ ] Multiple rapid swipes → all recognized
+  - [ ] **Verify:** No dropped or laggy gestures
+
+- [ ] **Test vertical swipes:**
+  - [ ] Swipe up on card → nothing happens (correct)
+  - [ ] Swipe down on card → nothing happens (correct)
+  - [ ] **Verify:** Only horizontal swipes trigger navigation
+
+- [ ] **Test diagonal swipes:**
+  - [ ] Swipe diagonally (e.g., up-left)
+  - [ ] **Verify:** Only horizontal component triggers navigation
+  - [ ] Should navigate left/right based on horizontal direction
+
+- [ ] **Test session completion on last word:**
+  - [ ] Navigate to last word
+  - [ ] Swipe left (as if next)
+  - [ ] **Verify:** "Session Complete!" popup appears immediately ✅
+  - [ ] **Verify:** Shows total words and mastery percentage
+  - [ ] Tap "Review Again"
+  - [ ] Navigate to last word again
+  - [ ] Swipe left again
+  - [ ] **Verify:** Popup appears again (repeatable)
+
+- [ ] **Test gesture boundaries:**
+  - [ ] On first word, swipe right → nothing happens ✅
+  - [ ] Can still tap star button (no conflict)
+  - [ ] Can still tap words in bottom list (no conflict)
+  - [ ] Can still scroll word list on iPhone (no conflict)
+  - [ ] iPad grid still tappable (no conflict)
 
 ### Test Airplane Mode During Use
 - [ ] Open a flashcard, mark some words mastered
 - [ ] Enable Airplane Mode
-- [ ] Continue navigating and marking words
-- [ ] **Verify:** App continues to work normally
+- [ ] Continue navigating with swipes and marking words
+- [ ] **Verify:** Swipe gestures continue to work normally
 - [ ] **Verify:** Progress still saves locally
 - [ ] Return to home
 - [ ] **Verify:** Mastery badges updated
@@ -315,10 +361,26 @@ Follow this checklist in order. Check off each item as you complete it.
   - [ ] All text visible
   - [ ] No truncation
   - [ ] Buttons reachable
+  - [ ] Word list horizontal scroll works
 - [ ] **On iPhone Pro Max (large screen):**
   - [ ] Content scales appropriately
   - [ ] No excessive white space
   - [ ] Layout looks balanced
+  - [ ] Word list horizontal scroll works
+- [ ] **On iPad (regular size class):**
+  - [ ] Open flashcard view
+  - [ ] **Verify:** Phonics title ~30% larger than iPhone ✅
+  - [ ] **Verify:** Word display ~30% larger than iPhone ✅
+  - [ ] **Verify:** Card height larger (280pt vs 200pt) ✅
+  - [ ] **Verify:** Better use of white space (not cramped)
+  - [ ] Scroll to "All Words" section
+  - [ ] **Verify:** Words display in evenly-distributed GRID layout ✅
+  - [ ] **Verify:** NO horizontal scrolling (unlike iPhone) ✅
+  - [ ] **Verify:** Words wrap to multiple rows
+  - [ ] **Verify:** Grid adapts to screen width
+  - [ ] Tap any word in grid
+  - [ ] **Verify:** Navigation to word works correctly
+  - [ ] Overall layout feels balanced and appropriate for iPad screen
 
 ---
 

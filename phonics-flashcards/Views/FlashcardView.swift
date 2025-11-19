@@ -11,11 +11,27 @@ struct FlashcardView: View {
     let card: PhonicsCard
     @StateObject private var viewModel: FlashcardViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    @State private var showMasteredFeedback = false
 
     // Dynamic Type scaling for custom font sizes
     @ScaledMetric(relativeTo: .largeTitle) private var phonicsTitleSize: CGFloat = 80
     @ScaledMetric(relativeTo: .title) private var wordDisplaySize: CGFloat = 60
     @ScaledMetric(relativeTo: .title2) private var navigationButtonSize: CGFloat = 50
+
+    // iPad gets larger sizes for better space utilization
+    private var adaptivePhonicsSize: CGFloat {
+        horizontalSizeClass == .regular ? phonicsTitleSize * 1.3 : phonicsTitleSize
+    }
+
+    private var adaptiveWordSize: CGFloat {
+        horizontalSizeClass == .regular ? wordDisplaySize * 1.3 : wordDisplaySize
+    }
+
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
 
     private var groupColor: Color {
         ColorTheme.colorForGroup(card.group)
@@ -105,11 +121,14 @@ struct FlashcardView: View {
 
             // Main flashcard
             flashcardContent
+                .gesture(
+                    DragGesture(minimumDistance: 50)
+                        .onEnded { gesture in
+                            handleSwipe(gesture: gesture)
+                        }
+                )
 
             Spacer()
-
-            // Navigation controls
-            controlsView
 
             // Word list
             wordListView
@@ -126,6 +145,29 @@ struct FlashcardView: View {
             }
         } message: {
             Text("You've completed all \(viewModel.totalWords) words!\n\nMastery: \(Int(viewModel.masteryPercentage * 100))%")
+        }
+    }
+
+    private func handleSwipe(gesture: DragGesture.Value) {
+        let horizontalAmount = gesture.translation.width
+        let verticalAmount = gesture.translation.height
+
+        // Only respond to primarily horizontal swipes
+        if abs(horizontalAmount) > abs(verticalAmount) {
+            if horizontalAmount < 0 {
+                // Swipe left - next word
+                if viewModel.isLastWord {
+                    // On last word, swiping right completes the session
+                    viewModel.completeSession()
+                } else {
+                    viewModel.nextWord()
+                }
+            } else {
+                // Swipe right - previous word (only if not on first word)
+                if viewModel.currentWordIndex > 0 {
+                    viewModel.previousWord()
+                }
+            }
         }
     }
 
@@ -154,29 +196,52 @@ struct FlashcardView: View {
     }
 
     private var flashcardContent: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: isIPad ? 30 : 20) {
             // Phonics title (always visible)
             Text(card.title)
-                .font(.system(size: phonicsTitleSize, weight: .bold))
+                .font(.system(size: adaptivePhonicsSize, weight: .bold))
                 .foregroundColor(groupColor)
                 .accessibilityLabel("Sound pattern: \(card.title)")
 
-            // Word display
+            // Word display with mastered star button
             ZStack {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(groupColor.opacity(0.1))
-                    .frame(height: 200)
+                    .frame(height: isIPad ? 280 : 200)
 
-                VStack(spacing: 12) {
+                VStack(spacing: 16) {
                     highlightedWord(viewModel.currentWord, phonetic: card.title, color: groupColor)
-                        .font(.system(size: wordDisplaySize, weight: .semibold))
+                        .font(.system(size: adaptiveWordSize, weight: .semibold))
                         .accessibilityLabel("Word: \(viewModel.currentWord)")
 
-                    if viewModel.isWordMastered(viewModel.currentWord) {
-                        Image(systemName: "star.fill")
-                            .font(.title)
-                            .foregroundColor(.yellow)
-                            .accessibilityLabel("Word mastered")
+                    // Star button for mastering word
+                    HStack(spacing: 8) {
+                        Button {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                                viewModel.markCurrentWordMastered()
+                                showMasteredFeedback = true
+                            }
+                            // Hide feedback after delay
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                withAnimation {
+                                    showMasteredFeedback = false
+                                }
+                            }
+                        } label: {
+                            Image(systemName: viewModel.isWordMastered(viewModel.currentWord) ? "star.fill" : "star")
+                                .font(.system(size: isIPad ? 44 : 36))
+                                .foregroundColor(.yellow)
+                                .scaleEffect(viewModel.isWordMastered(viewModel.currentWord) ? 1.0 : 0.9)
+                        }
+                        .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ? "Word mastered" : "Mark as mastered")
+                        .accessibilityHint(viewModel.isWordMastered(viewModel.currentWord) ? "Already mastered" : "Double tap to mark \(viewModel.currentWord) as learned")
+
+                        if showMasteredFeedback && viewModel.isWordMastered(viewModel.currentWord) {
+                            Text("Mastered!")
+                                .font(.headline)
+                                .foregroundColor(groupColor)
+                                .transition(.scale.combined(with: .opacity))
+                        }
                     }
                 }
             }
@@ -184,54 +249,9 @@ struct FlashcardView: View {
             .accessibilityLabel(viewModel.isWordMastered(viewModel.currentWord) ?
                               "Word: \(viewModel.currentWord). Mastered" :
                               "Word: \(viewModel.currentWord). Not yet mastered")
-
-            // Mark as mastered button
-            if !viewModel.isWordMastered(viewModel.currentWord) {
-                Button {
-                    withAnimation {
-                        viewModel.markCurrentWordMastered()
-                    }
-                } label: {
-                    Label("Mark as Mastered", systemImage: "star.fill")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.yellow)
-                        .cornerRadius(12)
-                }
-                .accessibilityLabel("Mark word as mastered")
-                .accessibilityHint("Double tap to mark \(viewModel.currentWord) as learned")
-            }
         }
     }
 
-    private var controlsView: some View {
-        HStack(spacing: 40) {
-            Button {
-                viewModel.previousWord()
-            } label: {
-                Image(systemName: "chevron.left.circle.fill")
-                    .font(.system(size: navigationButtonSize))
-                    .foregroundColor(groupColor)
-            }
-            .disabled(viewModel.currentWordIndex == 0)
-            .opacity(viewModel.currentWordIndex == 0 ? 0.3 : 1.0)
-            .accessibilityLabel("Previous word")
-            .accessibilityHint(viewModel.currentWordIndex == 0 ? "No previous words" : "Go to previous word")
-
-            Button {
-                viewModel.nextWord()
-            } label: {
-                Image(systemName: viewModel.isLastWord ? "checkmark.circle.fill" : "chevron.right.circle.fill")
-                    .font(.system(size: navigationButtonSize))
-                    .foregroundColor(groupColor)
-            }
-            .accessibilityLabel(viewModel.isLastWord ? "Complete session" : "Next word")
-            .accessibilityHint(viewModel.isLastWord ? "Double tap to finish session" : "Go to next word")
-        }
-        .padding(.vertical)
-    }
 
     private var wordListView: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -240,57 +260,85 @@ struct FlashcardView: View {
                 .foregroundColor(.secondary)
                 .accessibilityLabel("Word list")
 
-            ScrollViewReader { proxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(Array(card.words.enumerated()), id: \.offset) { index, word in
-                            Button {
-                                viewModel.jumpToWord(at: index)
-                            } label: {
-                                HStack(spacing: 4) {
-                                    // Use colored highlighting for words, but adjust color based on selection
-                                    if index == viewModel.currentWordIndex {
-                                        // When selected, show in white on colored background
-                                        Text(word)
-                                            .font(.caption)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(.white)
-                                    } else {
-                                        // When not selected, show with phonetic highlighting
-                                        highlightedWord(word, phonetic: card.title, color: groupColor)
-                                            .font(.caption)
-                                    }
-
-                                    if viewModel.isWordMastered(word) {
-                                        Image(systemName: "star.fill")
-                                            .font(.caption2)
-                                            .foregroundColor(.yellow)
-                                    }
-                                }
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(
-                                    index == viewModel.currentWordIndex ?
-                                    groupColor : Color.gray.opacity(0.2)
-                                )
-                                .cornerRadius(8)
-                            }
-                            .accessibilityLabel("\(word)\(viewModel.isWordMastered(word) ? ", mastered" : "")")
-                            .accessibilityHint(index == viewModel.currentWordIndex ? "Currently selected" : "Double tap to jump to this word")
-                            .id(index) // Add ID for ScrollViewReader
-                        }
-                    }
-                }
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel("Horizontal word list")
-                .onChange(of: viewModel.currentWordIndex) { _, newIndex in
-                    withAnimation {
-                        proxy.scrollTo(newIndex, anchor: .center)
-                    }
-                }
+            if isIPad {
+                // iPad: Evenly distributed grid layout
+                wordGridView
+            } else {
+                // iPhone: Horizontal scrolling layout
+                wordScrollView
             }
         }
         .padding(.top)
+    }
+
+    private var wordGridView: some View {
+        let columns = [
+            GridItem(.adaptive(minimum: 80, maximum: 120), spacing: 12)
+        ]
+
+        return LazyVGrid(columns: columns, spacing: 12) {
+            ForEach(Array(card.words.enumerated()), id: \.offset) { index, word in
+                wordButton(index: index, word: word)
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Word grid")
+    }
+
+    private var wordScrollView: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(Array(card.words.enumerated()), id: \.offset) { index, word in
+                        wordButton(index: index, word: word)
+                            .id(index) // Add ID for ScrollViewReader
+                    }
+                }
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Horizontal word list")
+            .onChange(of: viewModel.currentWordIndex) { _, newIndex in
+                withAnimation {
+                    proxy.scrollTo(newIndex, anchor: .center)
+                }
+            }
+        }
+    }
+
+    private func wordButton(index: Int, word: String) -> some View {
+        Button {
+            viewModel.jumpToWord(at: index)
+        } label: {
+            HStack(spacing: 4) {
+                // Use colored highlighting for words, but adjust color based on selection
+                if index == viewModel.currentWordIndex {
+                    // When selected, show in white on colored background
+                    Text(word)
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                } else {
+                    // When not selected, show with phonetic highlighting
+                    highlightedWord(word, phonetic: card.title, color: groupColor)
+                        .font(.caption)
+                }
+
+                if viewModel.isWordMastered(word) {
+                    Image(systemName: "star.fill")
+                        .font(.caption2)
+                        .foregroundColor(.yellow)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                index == viewModel.currentWordIndex ?
+                groupColor : Color.gray.opacity(0.2)
+            )
+            .cornerRadius(8)
+        }
+        .accessibilityLabel("\(word)\(viewModel.isWordMastered(word) ? ", mastered" : "")")
+        .accessibilityHint(index == viewModel.currentWordIndex ? "Currently selected" : "Double tap to jump to this word")
     }
 }
 

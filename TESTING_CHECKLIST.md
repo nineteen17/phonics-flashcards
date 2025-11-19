@@ -128,6 +128,93 @@
   - Wait or pull-to-refresh
   - Verify price loads successfully after retry
 
+### ✅ Swipe Gesture Navigation (CRITICAL)
+- [ ] **Swipe left to next word**
+  - Open any flashcard
+  - Swipe left on the card area
+  - Verify navigates to next word
+  - Verify animation is smooth
+  - Try multiple swipes in succession
+  - Verify no lag or dropped gestures
+
+- [ ] **Swipe right to previous word**
+  - Navigate to second or later word
+  - Swipe right on the card area
+  - Verify navigates to previous word
+  - Verify smooth animation
+  - On first word, swipe right does nothing ✅
+
+- [ ] **Swipe to complete session**
+  - Navigate to last word in flashcard
+  - Swipe left (as if going to next)
+  - Verify "Session Complete!" popup appears ✅
+  - Verify popup shows total words and mastery percentage
+  - This is CRITICAL - users must know to swipe left on last word
+
+- [ ] **Swipe gesture boundaries**
+  - Verify vertical swipes don't trigger navigation
+  - Verify diagonal swipes only respond to horizontal component
+  - Verify minimum swipe distance required (not accidental touches)
+  - Verify gestures work on iPad and iPhone
+
+- [ ] **Swipe vs tap interaction**
+  - Verify can still tap star button while swiping works
+  - Verify can still tap words in bottom list
+  - Verify gestures don't interfere with scrolling word list
+  - No conflicts between gesture recognizers ✅
+
+### ✅ Mastered Button Feature
+- [ ] **Star button interaction**
+  - Open any flashcard
+  - Navigate to an unmastered word
+  - Verify empty star icon displays below word
+  - Tap the star icon
+  - Verify star fills with animation (spring effect)
+  - Verify "Mastered!" text appears briefly next to star
+  - Verify "Mastered!" text fades after ~1.5 seconds
+  - Navigate to different word and back
+  - Verify star remains filled
+
+- [ ] **Star button states**
+  - On unmastered word: star is empty (outline only)
+  - On mastered word: star is filled (solid yellow)
+  - Verify tapping filled star does nothing (already mastered)
+  - Verify accessibility label changes based on state
+
+## iPad Layout Optimization
+
+### ✅ iPad-Specific Layout
+- [ ] **Word list grid on iPad**
+  - Open flashcard on iPad (or iPad simulator)
+  - Scroll to "All Words" section at bottom
+  - Verify words display in evenly-distributed grid layout
+  - Verify NO horizontal scrolling (unlike iPhone)
+  - Verify words wrap to multiple rows if needed
+  - Verify grid adapts to screen width
+  - Tap any word in grid - verify navigation works
+
+- [ ] **iPhone horizontal scroll preserved**
+  - Open flashcard on iPhone (or iPhone simulator)
+  - Scroll to "All Words" section
+  - Verify horizontal scrolling list (NOT grid)
+  - Verify auto-scroll to current word works
+  - Verify layout unchanged from previous version
+
+- [ ] **iPad larger fonts**
+  - Open flashcard on iPad
+  - Verify phonics title is ~30% larger than iPhone
+  - Verify word display is ~30% larger than iPhone
+  - Verify better use of white space
+  - Verify card height increased (280pt vs 200pt)
+  - Overall layout feels balanced, not cramped
+
+- [ ] **iPhone layout unchanged**
+  - Open flashcard on iPhone
+  - Verify fonts same size as before
+  - Verify spacing unchanged
+  - Verify card height 200pt (not increased)
+  - Layout feels balanced and appropriate for screen size
+
 ## Accessibility Testing (Dynamic Type - H2)
 
 ### ✅ Dynamic Type Scaling
@@ -174,7 +261,8 @@
   - Enable VoiceOver
   - Verify all elements have proper labels
   - Verify card navigation works
-  - Verify "Mark as Mastered" button accessible
+  - Verify star button accessible
+  - Verify star button label: "Mark as mastered" (empty star) or "Word mastered" (filled star)
   - Verify progress announcements clear
 
 - [ ] **Premium flow VoiceOver**
@@ -277,6 +365,7 @@
 - ✅ Premium purchase flow
 - ✅ Restore purchases
 - ✅ Progress data persistence
+- ✅ Swipe gesture navigation (especially completing session on last word)
 - ✅ No crashes or data loss
 
 **HIGH (Should Pass):**
