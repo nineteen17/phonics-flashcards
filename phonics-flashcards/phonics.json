@@ -94,7 +94,7 @@
       "sled",
       "med",
       "ted",
-      "red"
+      "fed"
     ]
   },
   {
@@ -106,7 +106,7 @@
       "men",
       "pen",
       "den",
-      "jen",
+      "ken",
       "ben",
       "hen"
     ]
@@ -133,9 +133,9 @@
       "keg",
       "peg",
       "beg",
-      "greg",
+      "dreg",
       "meg",
-      "neg",
+      "veg",
       "egg"
     ]
   },
@@ -749,7 +749,7 @@
       "from",
       "fresh",
       "frame",
-      "friemd",
+      "friend",
       "frown",
       "friday",
       "frog"
@@ -789,7 +789,7 @@
     "words": [
       "tree",
       "trick",
-      "tunk",
+      "trunk",
       "truck",
       "train",
       "trash",
@@ -845,7 +845,7 @@
     "words": [
       "smile",
       "smell",
-      "samrt",
+      "smart",
       "small",
       "smash",
       "smock",
@@ -1143,7 +1143,7 @@
       "coy",
       "enjoy",
       "cowboy",
-      "delpoy",
+      "deploy",
       "annoy"
     ]
   },
@@ -1502,8 +1502,8 @@
     "title": "dge",
     "words": [
       "hedge",
-      "fusdge",
-      "frisdge",
+      "fudge",
+      "fridge",
       "badge",
       "dodge",
       "judge",

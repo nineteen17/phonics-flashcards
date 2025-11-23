@@ -153,7 +153,13 @@ struct CircularProgressView: View {
                 )
                 .rotationEffect(.degrees(-90))
 
-            if progress > 0 {
+            if progress >= 1.0 {
+                // Show checkmark at 100%
+                Image(systemName: "checkmark")
+                    .font(.system(size: size * 0.5 * progressFontScale, weight: .bold))
+                    .foregroundColor(color)
+            } else if progress > 0 {
+                // Show percentage for incomplete progress
                 Text("\(Int(progress * 100))%")
                     .font(.system(size: size * 0.3 * progressFontScale))
                     .fontWeight(.semibold)
@@ -162,7 +168,7 @@ struct CircularProgressView: View {
         }
         .frame(width: size, height: size)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Progress: \(Int(progress * 100)) percent")
+        .accessibilityLabel(progress >= 1.0 ? "Completed" : "Progress: \(Int(progress * 100)) percent")
     }
 }
 

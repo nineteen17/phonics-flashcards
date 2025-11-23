@@ -11,6 +11,7 @@ struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @ObservedObject private var storeManager = StoreKitManager.shared
     @ObservedObject private var repository = PhonicsRepository.shared
+    @ObservedObject private var progressManager = ProgressManager.shared
     @State private var showingSettings = false
 
     var body: some View {
@@ -71,7 +72,9 @@ struct HomeView: View {
     }
 
     private var statsHeader: some View {
-        VStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
+            profileSummary
+
             HStack(spacing: 20) {
                 StatBadge(
                     title: "Sessions",
@@ -92,6 +95,36 @@ struct HomeView: View {
         .cornerRadius(12)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Statistics overview")
+    }
+
+    private var profileSummary: some View {
+        HStack {
+            HStack(spacing: 10) {
+                Circle()
+                    .fill(progressManager.activeProfileColor.color)
+                    .frame(width: 26, height: 26)
+                    .overlay(
+                        Image(systemName: "person.fill")
+                            .font(.caption2)
+                            .foregroundColor(.white)
+                    )
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(progressManager.activeProfileDisplayName)
+                        .font(.headline)
+                    Text("Active Profile")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+
+            Spacer()
+
+            Text("\(progressManager.profiles.count)/5 profiles")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .accessibilityLabel("Active profile: \(progressManager.activeProfileDisplayName). \(progressManager.profiles.count) out of 5 profiles in use")
     }
 
     private var premiumBanner: some View {

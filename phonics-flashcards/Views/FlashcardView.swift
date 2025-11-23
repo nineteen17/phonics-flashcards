@@ -17,13 +17,18 @@ struct FlashcardView: View {
     @State private var dragOffset: CGFloat = 0
 
     // Dynamic Type scaling for custom font sizes
-    @ScaledMetric(relativeTo: .largeTitle) private var phonicsTitleSize: CGFloat = 80
-    @ScaledMetric(relativeTo: .title) private var wordDisplaySize: CGFloat = 60
+    @ScaledMetric(relativeTo: .title) private var groupLabelSize: CGFloat = 34
+    @ScaledMetric(relativeTo: .largeTitle) private var patternTitleSize: CGFloat = 88
+    @ScaledMetric(relativeTo: .largeTitle) private var wordDisplaySize: CGFloat = 72
     @ScaledMetric(relativeTo: .title2) private var navigationButtonSize: CGFloat = 50
 
     // iPad gets larger sizes for better space utilization
-    private var adaptivePhonicsSize: CGFloat {
-        horizontalSizeClass == .regular ? phonicsTitleSize * 1.3 : phonicsTitleSize
+    private var adaptiveGroupLabelSize: CGFloat {
+        horizontalSizeClass == .regular ? groupLabelSize * 1.2 : groupLabelSize
+    }
+
+    private var adaptivePatternSize: CGFloat {
+        horizontalSizeClass == .regular ? patternTitleSize * 1.15 : patternTitleSize
     }
 
     private var adaptiveWordSize: CGFloat {
@@ -121,9 +126,9 @@ struct FlashcardView: View {
             // Main swipeable area (expanded for better UX)
             ZStack {
                 VStack(spacing: isIPad ? 30 : 20) {
-                    // Phonics title (stays fixed - no animation)
+                    // Phonics pattern title (stays fixed - no animation)
                     Text(card.title)
-                        .font(.system(size: adaptivePhonicsSize, weight: .bold))
+                        .font(.system(size: adaptivePatternSize, weight: .black))
                         .foregroundColor(groupColor)
                         .accessibilityLabel("Sound pattern: \(card.title)")
 
@@ -161,7 +166,7 @@ struct FlashcardView: View {
             wordListView
         }
         .padding()
-        .navigationTitle(card.title)
+        .navigationTitle(card.group)
         .navigationBarTitleDisplayMode(.inline)
         .alert("Session Complete!", isPresented: $viewModel.sessionComplete) {
             Button("Continue") {
@@ -232,11 +237,11 @@ struct FlashcardView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(groupColor.opacity(0.1))
-                .frame(height: isIPad ? 280 : 200)
+                .frame(height: isIPad ? 320 : 240)
 
-            VStack(spacing: 16) {
+            VStack(spacing: 20) {
                 highlightedWord(viewModel.currentWord, phonetic: card.title, color: groupColor)
-                    .font(.system(size: adaptiveWordSize, weight: .semibold))
+                    .font(.system(size: adaptiveWordSize, weight: .heavy))
                     .accessibilityLabel("Word: \(viewModel.currentWord)")
 
                 // Star button for mastering word
@@ -335,22 +340,16 @@ struct FlashcardView: View {
     }
 
     private func wordButton(index: Int, word: String) -> some View {
-        Button {
+        let isActive = index == viewModel.currentWordIndex
+
+        return Button {
             viewModel.jumpToWord(at: index)
         } label: {
             HStack(spacing: 4) {
-                // Use colored highlighting for words, but adjust color based on selection
-                if index == viewModel.currentWordIndex {
-                    // When selected, show in white on colored background
-                    Text(word)
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                } else {
-                    // When not selected, show with phonetic highlighting
-                    highlightedWord(word, phonetic: card.title, color: groupColor)
-                        .font(.caption)
-                }
+                Text(word)
+                    .font(.caption)
+                    .fontWeight(isActive ? .bold : .regular)
+                    .foregroundColor(isActive ? .white : .primary)
 
                 if viewModel.isWordMastered(word) {
                     Image(systemName: "star.fill")

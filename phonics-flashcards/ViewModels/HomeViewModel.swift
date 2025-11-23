@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 /// ViewModel for the home screen
 @MainActor
@@ -19,10 +20,24 @@ class HomeViewModel: ObservableObject {
     private let repository = PhonicsRepository.shared
     private let storeManager = StoreKitManager.shared
     private let progressManager = ProgressManager.shared
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
         // Don't call loadData() here - deferred to .task modifier in HomeView
         // This prevents "Publishing changes from within view updates" warning
+        progressManager.$progressData
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+
+        progressManager.$activeProfileId
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
     }
 
     func loadData() {
