@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* App vibrant colors matching iOS app */
+  --vibrant-pink: rgb(255, 51, 128);
+  --vibrant-lavender: rgb(179, 77, 242);
+  --vibrant-mint: rgb(51, 230, 153);
+  --vibrant-peach: rgb(255, 153, 51);
+  --vibrant-sky-blue: rgb(51, 166, 255);
+  --vibrant-lemon: rgb(255, 230, 0);
+  --vibrant-coral: rgb(255, 89, 77);
+  --vibrant-sage: rgb(77, 204, 128);
+  --vibrant-lilac: rgb(191, 64, 217);
+  --vibrant-blue: rgb(77, 128, 255);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Custom vibrant colors */
+  --color-vibrant-pink: var(--vibrant-pink);
+  --color-vibrant-lavender: var(--vibrant-lavender);
+  --color-vibrant-mint: var(--vibrant-mint);
+  --color-vibrant-peach: var(--vibrant-peach);
+  --color-vibrant-sky-blue: var(--vibrant-sky-blue);
+  --color-vibrant-lemon: var(--vibrant-lemon);
+  --color-vibrant-coral: var(--vibrant-coral);
+  --color-vibrant-sage: var(--vibrant-sage);
+  --color-vibrant-lilac: var(--vibrant-lilac);
+  --color-vibrant-blue: var(--vibrant-blue);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
