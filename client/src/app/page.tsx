@@ -41,12 +41,15 @@ const features = [
 export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isHeaderSticky, setIsHeaderSticky] = useState(false);
-  const [pricing, setPricing] = useState<PricingData | null>(null);
+  const [pricing, setPricing] = useState<PricingData>(getLocalizedPricing("US"));
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("US");
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [hideScrollButton, setHideScrollButton] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   const allCountries = getAllCountries();
   const filteredCountries = allCountries.filter(({ data }) =>
@@ -57,6 +60,17 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
+      setHideScrollButton(false);
+
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+
+      // Set new timeout to hide button after 2.5 seconds of inactivity
+      scrollTimeoutRef.current = setTimeout(() => {
+        setHideScrollButton(true);
+      }, 2500);
 
       // Check if we've scrolled past the hero section
       if (heroRef.current) {
@@ -66,14 +80,21 @@ export default function Home() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
+    setIsClient(true);
     const savedCountry = localStorage.getItem('selectedCountry');
-    const countryCode = savedCountry || 'US';
-    setSelectedCountryCode(countryCode);
-    setPricing(getLocalizedPricing(countryCode));
+    if (savedCountry && savedCountry !== 'US') {
+      setSelectedCountryCode(savedCountry);
+      setPricing(getLocalizedPricing(savedCountry));
+    }
   }, []);
 
   useEffect(() => {
@@ -153,9 +174,9 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative mx-auto flex w-full max-w-none xl:max-w-[90vw] 2xl:max-w-[1600px] flex-col gap-16 px-6 pb-20 pt-12 md:px-10 lg:px-16 xl:px-20 lg:pt-16">
+      <main className="relative mx-auto flex w-full max-w-none xl:max-w-[90vw] 2xl:max-w-[1600px] flex-col gap-16 px-0 md:px-6 pb-20 pt-0 md:pt-12 lg:px-10 xl:px-16 lg:pt-16">
         {/* Hero Header */}
-        <header ref={heroRef} className="overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-10 shadow-2xl shadow-slate-900/20 backdrop-blur md:px-12 md:py-14">
+        <header ref={heroRef} className="overflow-hidden md:rounded-3xl md:border md:border-white/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-10 md:shadow-2xl md:shadow-slate-900/20 md:backdrop-blur md:px-12 md:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_40%),radial-gradient(circle_at_70%_80%,rgba(179,77,242,0.15),transparent_50%)]" />
 
           <div className="relative">
@@ -225,7 +246,7 @@ export default function Home() {
         </header>
 
         {/* Features Section */}
-        <section className="rounded-3xl border border-white/50 bg-white/80 p-8 shadow-xl backdrop-blur md:p-12">
+        <section className="mx-6 md:mx-0 rounded-3xl border border-white/50 bg-white/80 p-8 shadow-xl backdrop-blur md:p-12">
           <div className="text-center mb-10">
             <p className="text-sm font-bold uppercase tracking-widest text-[var(--vibrant-lavender)] mb-3">
               ✨ Features
@@ -259,7 +280,7 @@ export default function Home() {
         </section>
 
         {/* Pricing Section */}
-        <section className="rounded-3xl border border-white/50 bg-gradient-to-br from-white/95 to-purple-50/50 p-8 shadow-xl backdrop-blur md:p-12">
+        <section className="mx-6 md:mx-0 rounded-3xl border border-white/50 bg-gradient-to-br from-white/95 to-purple-50/50 p-8 shadow-xl backdrop-blur md:p-12">
           <div className="text-center mb-10">
             <p className="text-sm font-bold uppercase tracking-widest text-[var(--vibrant-coral)] mb-3">
               💰 Simple Pricing
@@ -276,7 +297,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-6">
               {/* Free Option */}
               <div className="rounded-3xl border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 p-8 relative overflow-hidden shadow-xl">
-                <div className="absolute top-4 right-4 rounded-full bg-green-500 px-4 py-1.5 text-xs font-bold text-white shadow-lg">
+                <div className="absolute top-3 right-3 md:top-4 md:right-4 rounded-full bg-green-500 px-2.5 py-1 md:px-4 md:py-1.5 text-[10px] md:text-xs font-bold text-white shadow-lg">
                   FREE FOREVER
                 </div>
                 <div className="space-y-4">
@@ -354,16 +375,12 @@ export default function Home() {
                   </div>
 
                   <div className="py-4">
-                    {pricing ? (
-                      <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-5xl font-bold bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] bg-clip-text text-transparent">
-                          {formatPrice(pricing)}
-                        </span>
-                        <span className="text-lg text-slate-600">{pricing.currencyCode}</span>
-                      </div>
-                    ) : (
-                      <div className="h-16 animate-pulse bg-slate-200 rounded"></div>
-                    )}
+                    <div className="flex items-baseline gap-2 mb-2">
+                      <span className="text-5xl font-bold bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] bg-clip-text text-transparent">
+                        {formatPrice(pricing)}
+                      </span>
+                      <span className="text-lg text-slate-600">{pricing.currencyCode}</span>
+                    </div>
                     <p className="text-sm font-semibold text-slate-700">
                       One-time purchase, yours forever
                     </p>
@@ -376,13 +393,13 @@ export default function Home() {
                       className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-white border-2 border-slate-200 rounded-xl hover:bg-slate-50 hover:border-[var(--vibrant-lavender)] transition-all group"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">{pricing?.flag || "🌍"}</span>
+                        <span className="text-xl">{pricing.flag}</span>
                         <div className="text-left">
                           <p className="text-xs font-semibold text-slate-900">
-                            {pricing?.country || "Select Country"}
+                            {pricing.country}
                           </p>
                           <p className="text-xs text-slate-500">
-                            {pricing ? `${pricing.currencyCode} pricing` : "Choose region"}
+                            {pricing.currencyCode} pricing
                           </p>
                         </div>
                       </div>
@@ -477,7 +494,7 @@ export default function Home() {
         </section>
 
         {/* Screenshot Gallery Section */}
-        <section className="rounded-3xl border border-white/50 bg-gradient-to-br from-white/95 to-pink-50/50 p-8 shadow-xl backdrop-blur md:p-12">
+        <section className="mx-6 md:mx-0 rounded-3xl border border-white/50 bg-gradient-to-br from-white/95 to-pink-50/50 p-8 shadow-xl backdrop-blur md:p-12">
           <div className="text-center mb-10">
             <p className="text-sm font-bold uppercase tracking-widest text-[var(--vibrant-pink)] mb-3">
               📸 See It In Action
@@ -536,7 +553,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="text-center text-sm text-slate-600 pt-8 border-t border-slate-200">
+        <footer className="mx-6 md:mx-0 text-center text-sm text-slate-600 pt-8 border-t border-slate-200">
           <div className="flex flex-wrap gap-4 justify-center mb-4">
             <Link href="/support" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Support & FAQ
@@ -555,11 +572,22 @@ export default function Home() {
       </main>
 
       {/* Scroll to Top Button */}
-      {showScrollTop && (
+      {showScrollTop && !hideScrollButton && (
         <a
           href="#"
           className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] text-white shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-110 hover:shadow-purple-500/50 focus:outline-none focus:ring-4 focus:ring-purple-300 animate-in fade-in slide-in-from-bottom-4"
           aria-label="Scroll to top"
+          onMouseEnter={() => {
+            setHideScrollButton(false);
+            if (scrollTimeoutRef.current) {
+              clearTimeout(scrollTimeoutRef.current);
+            }
+          }}
+          onMouseLeave={() => {
+            scrollTimeoutRef.current = setTimeout(() => {
+              setHideScrollButton(true);
+            }, 2500);
+          }}
         >
           <svg
             className="h-6 w-6"
