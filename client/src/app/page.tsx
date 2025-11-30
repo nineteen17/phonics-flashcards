@@ -555,12 +555,12 @@ export default function Home() {
         {/* Footer */}
         <footer className="mx-6 md:mx-0 text-center text-sm text-slate-600 pt-8 border-t border-slate-200">
           <div className="flex flex-wrap gap-4 justify-center mb-4">
-            <Link href="/support" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+            <a href="/support" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Support & FAQ
-            </Link>
-            <Link href="/privacy" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+            </a>
+            <a href="/privacy" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Privacy Policy
-            </Link>
+            </a>
             <a href="mailto:support@earlyreader.app" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Contact Us
             </a>
