@@ -199,7 +199,7 @@ export default function Home() {
                   Early Reader Phonics
                 </h1>
                 <p className="text-lg text-slate-300 md:text-xl max-w-2xl mx-auto">
-                  Making phonics fun and accessible for young learners ages 4-8.
+                  Making reading fun and accessible for young learners ages 4-8.
                 </p>
               </div>
 
