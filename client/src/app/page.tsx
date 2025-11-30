@@ -174,7 +174,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative mx-auto flex w-full max-w-none xl:max-w-[90vw] 2xl:max-w-[1600px] flex-col gap-16 px-0 md:px-6 pb-20 pt-0 md:pt-12 lg:px-10 xl:px-16 lg:pt-16">
+      <main className="relative mx-auto flex w-full max-w-none xl:max-w-[90vw] 2xl:max-w-[1600px] flex-col gap-16 px-0 md:px-6 pb-32 md:pb-20 pt-0 md:pt-12 lg:px-10 xl:px-16 lg:pt-16">
         {/* Hero Header */}
         <header ref={heroRef} className="overflow-hidden md:rounded-3xl md:border md:border-white/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-10 md:shadow-2xl md:shadow-slate-900/20 md:backdrop-blur md:px-12 md:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_40%),radial-gradient(circle_at_70%_80%,rgba(179,77,242,0.15),transparent_50%)]" />
@@ -555,12 +555,12 @@ export default function Home() {
         {/* Footer */}
         <footer className="mx-6 md:mx-0 text-center text-sm text-slate-600 pt-8 border-t border-slate-200">
           <div className="flex flex-wrap gap-4 justify-center mb-4">
-            <a href="/support" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+            <Link href="/support" prefetch={false} className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Support & FAQ
-            </a>
-            <a href="/privacy" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+            </Link>
+            <Link href="/privacy" prefetch={false} className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Privacy Policy
-            </a>
+            </Link>
             <a href="mailto:support@earlyreader.app" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
               Contact Us
             </a>
