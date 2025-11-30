@@ -174,7 +174,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative mx-auto flex w-full max-w-none xl:max-w-[90vw] 2xl:max-w-[1600px] flex-col gap-16 px-0 md:px-6 pb-32 md:pb-20 pt-0 md:pt-12 lg:px-10 xl:px-16 lg:pt-16">
+      <main className="relative mx-auto flex w-full max-w-none xl:max-w-[90vw] 2xl:max-w-[1600px] flex-col gap-16 px-0 md:px-6 pb-[max(8rem,env(safe-area-inset-bottom))] md:pb-20 pt-0 md:pt-12 lg:px-10 xl:px-16 lg:pt-16">
         {/* Hero Header */}
         <header ref={heroRef} className="overflow-hidden md:rounded-3xl md:border md:border-white/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-6 py-10 md:shadow-2xl md:shadow-slate-900/20 md:backdrop-blur md:px-12 md:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent_40%),radial-gradient(circle_at_70%_80%,rgba(179,77,242,0.15),transparent_50%)]" />
@@ -571,11 +571,11 @@ export default function Home() {
         </footer>
       </main>
 
-      {/* Scroll to Top Button */}
+      {/* Scroll to Top Button - Hidden on mobile portrait */}
       {showScrollTop && !hideScrollButton && (
         <a
           href="#"
-          className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] text-white shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-110 hover:shadow-purple-500/50 focus:outline-none focus:ring-4 focus:ring-purple-300 animate-in fade-in slide-in-from-bottom-4"
+          className="hidden md:flex fixed bottom-8 right-8 z-50 h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] text-white shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-110 hover:shadow-purple-500/50 focus:outline-none focus:ring-4 focus:ring-purple-300 animate-in fade-in slide-in-from-bottom-4"
           aria-label="Scroll to top"
           onMouseEnter={() => {
             setHideScrollButton(false);
