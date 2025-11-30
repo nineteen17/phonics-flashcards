@@ -6,9 +6,10 @@ export interface PricingData {
   currencyCode: string;
   price: string;
   numericPrice: number;
+  flag: string;
 }
 
-export const PRICING_BY_COUNTRY: Record<string, PricingData> = {
+export const PRICING_BY_COUNTRY: Record<string, Omit<PricingData, 'flag'>> = {
   NZ: { country: "New Zealand", currencyCode: "NZD", price: "4.99", numericPrice: 4.99 },
   AF: { country: "Afghanistan", currencyCode: "USD", price: "2.99", numericPrice: 2.99 },
   AL: { country: "Albania", currencyCode: "USD", price: "3.99", numericPrice: 3.99 },
@@ -192,6 +193,7 @@ export const DEFAULT_PRICING: PricingData = {
   currencyCode: "USD",
   price: "2.99",
   numericPrice: 2.99,
+  flag: "🇺🇸",
 };
 
 // Currency symbols mapping
@@ -243,6 +245,17 @@ export const CURRENCY_SYMBOLS: Record<string, string> = {
 };
 
 /**
+ * Convert country code to flag emoji
+ */
+function getFlagEmoji(countryCode: string): string {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map(char => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}
+
+/**
  * Get localized pricing based on country code
  */
 export function getLocalizedPricing(countryCode?: string): PricingData {
@@ -250,7 +263,11 @@ export function getLocalizedPricing(countryCode?: string): PricingData {
     return DEFAULT_PRICING;
   }
 
-  return PRICING_BY_COUNTRY[countryCode.toUpperCase()] || DEFAULT_PRICING;
+  const pricing = PRICING_BY_COUNTRY[countryCode.toUpperCase()] || DEFAULT_PRICING;
+  return {
+    ...pricing,
+    flag: getFlagEmoji(countryCode.toUpperCase())
+  };
 }
 
 /**
@@ -258,7 +275,13 @@ export function getLocalizedPricing(countryCode?: string): PricingData {
  */
 export function getAllCountries(): Array<{ code: string; data: PricingData }> {
   return Object.entries(PRICING_BY_COUNTRY)
-    .map(([code, data]) => ({ code, data }))
+    .map(([code, data]) => ({
+      code,
+      data: {
+        ...data,
+        flag: getFlagEmoji(code)
+      }
+    }))
     .sort((a, b) => a.data.country.localeCompare(b.data.country));
 }
 
