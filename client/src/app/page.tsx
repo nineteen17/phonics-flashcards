@@ -553,15 +553,26 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="mx-6 md:mx-0 text-center text-sm text-slate-600 pt-8 border-t border-slate-200">
-          <div className="flex flex-wrap gap-4 justify-center mb-4">
-            <Link href="/support" prefetch={false} className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+        <footer className="mx-6 md:mx-0 text-center text-sm text-slate-600 pt-8 border-t border-slate-200 relative z-[60]">
+          <div className="flex flex-wrap gap-4 justify-center mb-4 relative z-[60]">
+            <Link
+              href="/support"
+              prefetch={false}
+              className="text-[var(--vibrant-lavender)] hover:underline font-medium pointer-events-auto cursor-pointer touch-manipulation"
+            >
               Support & FAQ
             </Link>
-            <Link href="/privacy" prefetch={false} className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+            <Link
+              href="/privacy"
+              prefetch={false}
+              className="text-[var(--vibrant-lavender)] hover:underline font-medium pointer-events-auto cursor-pointer touch-manipulation"
+            >
               Privacy Policy
             </Link>
-            <a href="mailto:support@earlyreader.app" className="text-[var(--vibrant-lavender)] hover:underline font-medium">
+            <a
+              href="mailto:support@earlyreader.app"
+              className="text-[var(--vibrant-lavender)] hover:underline font-medium pointer-events-auto cursor-pointer touch-manipulation"
+            >
               Contact Us
             </a>
           </div>
@@ -571,11 +582,11 @@ export default function Home() {
         </footer>
       </main>
 
-      {/* Scroll to Top Button - Hidden on mobile portrait */}
+      {/* Scroll to Top Button */}
       {showScrollTop && !hideScrollButton && (
         <a
           href="#"
-          className="hidden md:flex fixed bottom-8 right-8 z-50 h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] text-white shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-110 hover:shadow-purple-500/50 focus:outline-none focus:ring-4 focus:ring-purple-300 animate-in fade-in slide-in-from-bottom-4"
+          className="flex fixed bottom-8 right-8 z-50 h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[var(--vibrant-lavender)] to-[var(--vibrant-pink)] text-white shadow-2xl shadow-purple-500/30 transition-all duration-300 hover:scale-110 hover:shadow-purple-500/50 focus:outline-none focus:ring-4 focus:ring-purple-300 animate-in fade-in slide-in-from-bottom-4"
           aria-label="Scroll to top"
           onMouseEnter={() => {
             setHideScrollButton(false);
