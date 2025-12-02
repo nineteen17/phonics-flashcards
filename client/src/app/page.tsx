@@ -5,38 +5,6 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { getLocalizedPricing, formatPrice, getAllCountries, type PricingData } from "@/data/pricing";
 
-const features = [
-  {
-    icon: "🎯",
-    title: "Phonics Mastery",
-    description: "9 comprehensive groups covering short vowels, blends, digraphs, and more",
-  },
-  {
-    icon: "🎨",
-    title: "Vibrant Cards",
-    description: "Colorful, engaging flashcards designed for young learners",
-  },
-  {
-    icon: "👥",
-    title: "Multi-Profile",
-    description: "Track progress for multiple children with individual profiles",
-  },
-  {
-    icon: "💵",
-    title: "One-Time Purchase",
-    description: "Pay once, own forever. No subscriptions!",
-  },
-  {
-    icon: "📊",
-    title: "Progress Tracking",
-    description: "See words mastered and sessions completed",
-  },
-  {
-    icon: "↓",
-    title: "Offline Access",
-    description: "No internet required, no external tracking, no ads",
-  },
-];
 
 export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -245,37 +213,67 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Features Section */}
-        <section className="mx-6 md:mx-0 rounded-3xl border border-white/50 bg-white/80 p-8 shadow-xl backdrop-blur md:p-12">
+        {/* Screenshot Gallery Section */}
+        <section className="mx-6 md:mx-0 rounded-3xl border border-white/50 bg-gradient-to-br from-white/95 to-pink-50/50 p-8 shadow-xl backdrop-blur md:p-12">
           <div className="text-center mb-10">
-            <p className="text-sm font-bold uppercase tracking-widest text-[var(--vibrant-lavender)] mb-3">
-              ✨ Features
+            <p className="text-sm font-bold uppercase tracking-widest text-[var(--vibrant-pink)] mb-3">
+              📸 See It In Action
             </p>
             <h2 className="font-[family-name:var(--font-geist-mono)] text-3xl font-bold text-slate-900 md:text-4xl">
-              Everything your child needs to learn phonics
+              Beautiful, Engaging Learning Experience
             </h2>
             <p className="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">
-              Carefully designed features that make learning to read engaging, effective, and fun.
+              Vibrant flashcards, intuitive swipe gestures, and personalized progress tracking for each child.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-xl hover:scale-105 hover:border-[var(--vibrant-lavender)]"
-              >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
-                  {feature.icon}
+          {/* Mobile: Horizontal Scroll */}
+          <div className="md:hidden overflow-x-auto -mx-6 px-6 pb-4">
+            <div className="flex gap-4 snap-x snap-mandatory">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <div
+                  key={num}
+                  className="flex-none w-[280px] snap-center"
+                >
+                  <div className="rounded-2xl overflow-hidden border-2 border-slate-200 bg-white shadow-lg">
+                    <Image
+                      src={`/screenshots/image${num}.jpg`}
+                      alt={`App screenshot ${num}`}
+                      width={1290}
+                      height={2796}
+                      className="w-full h-auto"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-                <h3 className="font-[family-name:var(--font-geist-mono)] text-xl font-bold text-slate-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-600 leading-relaxed">
-                  {feature.description}
-                </p>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: Grid Layout */}
+          <div className="hidden md:grid gap-6 lg:grid-cols-5">
+            {[1, 2, 3, 4, 5].map((num) => (
+              <div
+                key={num}
+                className="group rounded-2xl overflow-hidden border-2 border-slate-200 bg-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-[var(--vibrant-pink)]"
+              >
+                <Image
+                  src={`/screenshots/image${num}.jpg`}
+                  alt={`App screenshot ${num}`}
+                  width={1290}
+                  height={2796}
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
               </div>
             ))}
+          </div>
+
+          {/* Swipe indicator for mobile */}
+          <div className="md:hidden text-center mt-6">
+            <p className="text-sm text-slate-500">
+              ← Swipe to see more →
+            </p>
           </div>
         </section>
 
@@ -486,65 +484,6 @@ export default function Home() {
 
                   <p className="text-xs text-slate-500 pt-4 border-t border-slate-200">
                     Try the free version first, upgrade when you're ready. No pressure!
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Screenshot Gallery Section */}
-        <section className="mx-6 md:mx-0 rounded-3xl border border-white/50 bg-gradient-to-br from-white/95 to-pink-50/50 p-8 shadow-xl backdrop-blur md:p-12">
-          <div className="text-center mb-10">
-            <p className="text-sm font-bold uppercase tracking-widest text-[var(--vibrant-pink)] mb-3">
-              📸 See It In Action
-            </p>
-            <h2 className="font-[family-name:var(--font-geist-mono)] text-3xl font-bold text-slate-900 md:text-4xl">
-              Beautiful, Engaging Learning Experience
-            </h2>
-            <p className="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">
-              Vibrant flashcards, intuitive swipe gestures, and personalized progress tracking for each child.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-2xl overflow-hidden border-2 border-slate-200 bg-white shadow-lg hover:shadow-2xl transition hover:scale-105">
-              <div className="aspect-[9/19.5] bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-6xl mb-4">📚</div>
-                  <p className="font-[family-name:var(--font-geist-mono)] text-lg font-bold text-slate-900">
-                    Home Screen
-                  </p>
-                  <p className="text-sm text-slate-600 mt-2">
-                    Choose from 9 phonics groups
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-2xl overflow-hidden border-2 border-slate-200 bg-white shadow-lg hover:shadow-2xl transition hover:scale-105">
-              <div className="aspect-[9/19.5] bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-6xl mb-4">👆</div>
-                  <p className="font-[family-name:var(--font-geist-mono)] text-lg font-bold text-slate-900">
-                    Swipe to Learn
-                  </p>
-                  <p className="text-sm text-slate-600 mt-2">
-                    Interactive flashcard swiping
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-2xl overflow-hidden border-2 border-slate-200 bg-white shadow-lg hover:shadow-2xl transition hover:scale-105">
-              <div className="aspect-[9/19.5] bg-gradient-to-br from-green-100 to-mint-100 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-6xl mb-4">📊</div>
-                  <p className="font-[family-name:var(--font-geist-mono)] text-lg font-bold text-slate-900">
-                    Track Progress
-                  </p>
-                  <p className="text-sm text-slate-600 mt-2">
-                    See words mastered and sessions
                   </p>
                 </div>
               </div>
