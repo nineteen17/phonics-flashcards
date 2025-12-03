@@ -80,6 +80,9 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
   manifest: "/manifest.json",
+  other: {
+    "apple-itunes-app": "app-id=6755822235, app-argument=myURL",
+  },
 };
 
 export default function RootLayout({
